@@ -1,0 +1,87 @@
+<!-- templates/fragments/footer.html -->
+ <div th:fragment="footer">
+
+<footer class="bg-linear-to-r from-gray-700 to-gray-800 text-white bottom-0 left-0 w-full z-40 shadow-2xl transition-all duration-300">
+
+  <!-- Top Footer Section -->
+  <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8"
+       data-sr="fade-up">
+
+    <!-- ShopEase Info -->
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Gopal Shopping</h2>
+      <p class="text-sm text-blue-100 leading-relaxed">
+        Your one-stop destination for quality products at unbeatable prices.
+        Shop smart, live better with ShopEase.
+      </p>
+      <div class="flex space-x-4 mt-4">
+        <a href="#" class="hover:text-yellow-300 transition"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="hover:text-yellow-300 transition"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="hover:text-yellow-300 transition"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="hover:text-yellow-300 transition"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+      <ul class="space-y-2 text-blue-100">
+        <li><a th:href="@{/home}" class="hover:text-white transition-all">Home</a></li>
+        <li><a th:href="@{/product}" class="hover:text-white transition-all">Products</a></li>
+        <li><a th:href="@{/about}" class="hover:text-white transition-all">About Us</a></li>
+        <li><a th:href="@{/contact}" class="hover:text-white transition-all">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Dynamic Categories -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4">Popular Categories</h3>
+      <ul class="space-y-2 text-blue-100">
+        <li th:each="category : ${categories}">
+          <a th:href="@{'/category/' + ${category.id}}"
+             th:text="${category.name}"
+             class="hover:text-white transition-all"></a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4">Stay Updated</h3>
+      <p class="text-sm text-blue-100 mb-3">Subscribe to our newsletter for new offers.</p>
+      <!-- <form class="flex flex-col sm:flex-row gap-2">
+        <input type="email" placeholder="Enter your email"
+               class="w-full sm:w-auto flex-1 px-3 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+        <button type="submit"
+                class="bg-yellow-400 text-blue-700 font-semibold px-4 py-2 rounded-lg hover:bg-yellow-300 transition-all">
+          Subscribe
+        </button>
+      </form> -->
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="border-t border-blue-500"></div>
+
+  <!-- Bottom Footer -->
+  <div class="text-center py-4 text-sm text-blue-100">
+    <p>© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> Gopal Shopping. All rights reserved.</p>
+    <p class="text-xs mt-1">Made with ❤️ using Spring Boot, Thymeleaf & Tailwind CSS</p>
+  </div>
+</footer>
+
+<!-- ScrollReveal Animation -->
+<script src="https://unpkg.com/scrollreveal"></script>
+<script>
+  ScrollReveal().reveal('[data-sr="fade-up"]', {
+    duration: 800,
+    origin: 'bottom',
+    distance: '40px',
+    delay: 100
+  });
+</script>
+
+<!-- FontAwesome for icons -->
+<script src="https://kit.fontawesome.com/a2e0d5efb3.js" crossorigin="anonymous"></script>
+
+</div>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gopal Shop | Add Product</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional: Custom smooth fade animation -->
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fadeInUp {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-linear-to-br from-blue-50 via-white to-purple-50 min-h-screen flex items-center justify-center">
+    <div id="content">
+  <section class="w-full max-w-2xl mx-auto p-6 animate-fadeInUp mt-10">
+    <div class="bg-white/80 backdrop-blur-lg shadow-2xl rounded-2xl p-8 border border-gray-100 hover:shadow-blue-200 transition-all duration-500">
+
+      <a th:href="@{'/admin/'}" class="text-blue-600 hover:text-blue-800 font-medium transition">
+              <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">🛒 Add Product</h2>
+        <p class="text-gray-500 text-sm">Fill in the product details below to add a new item.</p>
+
+        <!-- Success Message -->
+        <th:block th:if="${session.successMsg}">
+          <p class="text-green-600 font-medium mt-2">[[${session.successMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+        </th:block>
+
+        <!-- Error Message -->
+        <th:block th:if="${session.errorMsg}">
+          <p class="text-red-600 font-medium mt-2">[[${session.errorMsg}]]</p>
+          <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+        </th:block>
+      </div>
+
+      <!-- Form -->
+      <form th:action="@{'/admin/save-product'}" method="post" enctype="multipart/form-data" class="space-y-5">
+        
+        <!-- Title -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Product Title</label>
+          <input type="text" name="title" required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea name="description" rows="4" required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none resize-none"></textarea>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <select name="category" required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <option>-- Select --</option>
+            <option th:each="cat, c:${category}">[[${cat.name}]]</option>
+          </select>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+          <input type="number" name="price" required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+          <div class="flex items-center space-x-6">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="isActive" value="true" checked
+                class="text-blue-600 focus:ring-blue-500">
+              <span class="text-gray-700">Active</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="isActive" value="false"
+                class="text-blue-600 focus:ring-blue-500">
+              <span class="text-gray-700">Inactive</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stock & Image -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+            <input type="number" name="stock" required
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+            <input type="file" name="file" required
+              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+          </div>
+        </div>
+        <br>
+        <!-- Submit -->
+        <button
+          class="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transition-all duration-300">
+          Save Product
+        </button>
+
+      </form>
+    </div>
+  </section>
+  </div>
+</body>
+</html>

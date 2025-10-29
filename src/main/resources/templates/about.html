@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Gopal Shopping</title>
+  <script src="https://kit.fontawesome.com/a2e0d5efb3.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+  
+ <div id="content">
+
+  <!-- 🌟 Hero Section -->
+  <section class="relative bg-linear-to-r from-blue-600 to-indigo-700 text-white py-24 mt-16 overflow-hidden">
+    <div class="container mx-auto px-6 text-center" data-sr="fade-up">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">About Gopal Shopping</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">
+        Empowering your shopping experience with trust, technology, and trends.
+      </p>
+    </div>
+    <div class="absolute inset-0 bg-linear-to-t from-black/20"></div>
+  </section>
+
+  <!-- 💡 Mission Section -->
+  <section class="container mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <div data-sr="fade-right">
+      <img src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png" alt="Mission" class="w-full max-w-md mx-auto rounded-lg drop-shadow-lg">
+    </div>
+    <div data-sr="fade-left">
+      <h2 class="text-3xl font-bold mb-4 text-blue-700">Our Mission</h2>
+      <p class="text-gray-600 leading-relaxed mb-4">
+        At Gopal Shopping, we aim to provide a seamless, enjoyable, and innovative online shopping
+        experience for everyone. We connect customers with top-quality products and exceptional service.
+      </p>
+      <p class="text-gray-600 leading-relaxed">
+        Our mission is to make e-commerce faster, safer, and more customer-centric — blending technology and trust.
+      </p>
+    </div>
+  </section>
+
+  <!-- 📊 Company Stats Section -->
+  <section class="bg-blue-50 py-16">
+    <div class="container mx-auto px-6 text-center" data-sr="fade-up">
+      <h2 class="text-3xl font-bold text-blue-700 mb-10">Our Growth at a Glance</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div>
+          <p class="text-5xl font-bold text-blue-600" th:text="${stats.users}">1M+</p>
+          <p class="text-gray-600 mt-2">Happy Users</p>
+        </div>
+        <div>
+          <p class="text-5xl font-bold text-blue-600" th:text="${stats.orders}">5M+</p>
+          <p class="text-gray-600 mt-2">Orders Delivered</p>
+        </div>
+        <div>
+          <p class="text-5xl font-bold text-blue-600" th:text="${stats.products}">10K+</p>
+          <p class="text-gray-600 mt-2">Products Listed</p>
+        </div>
+        <div>
+          <p class="text-5xl font-bold text-blue-600" th:text="${stats.reviews}">50K+</p>
+          <p class="text-gray-600 mt-2">Customer Reviews</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 👥 Our Team Section -->
+  <section class="container mx-auto px-6 py-16">
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-10">Meet Our Team</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10" data-sr="fade-up">
+      <div th:each="member : ${team}"
+           class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-2 duration-300">
+        <img th:src="${member.photoUrl}" alt="Team Member" class="w-full h-60 object-cover">
+        <div class="p-6 text-center">
+          <h3 class="text-xl font-semibold text-blue-700" th:text="${member.name}">John Doe</h3>
+          <p class="text-gray-600 mb-2" th:text="${member.role}">CEO</p>
+          <div class="flex justify-center space-x-3">
+            <a th:href="${member.linkedin}" class="text-gray-500 hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
+            <a th:href="${member.twitter}" class="text-gray-500 hover:text-blue-700"><i class="fab fa-twitter"></i></a>
+            <a th:href="${member.github}" class="text-gray-500 hover:text-blue-700"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 💬 Customer Testimonials -->
+  <section class="bg-indigo-700 text-white py-16">
+    <div class="container mx-auto px-6 text-center" data-sr="fade-up">
+      <h2 class="text-3xl font-bold mb-10">What Our Customers Say</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div th:each="review : ${reviews}"
+             class="bg-white text-gray-800 rounded-xl shadow-lg p-6 hover:shadow-2xl transition duration-300">
+          <p class="italic mb-4" th:text="${review.comment}">
+            "Excellent service and great quality!"
+          </p>
+          <p class="font-semibold text-blue-700" th:text="${review.userName}">- Priya Sharma</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- 🌈 ScrollReveal Animations -->
+  <script>
+    ScrollReveal().reveal('[data-sr="fade-up"]', {
+      duration: 800,
+      origin: 'bottom',
+      distance: '40px',
+      delay: 100
+    });
+    ScrollReveal().reveal('[data-sr="fade-right"]', {
+      duration: 800,
+      origin: 'right',
+      distance: '50px',
+      delay: 150
+    });
+    ScrollReveal().reveal('[data-sr="fade-left"]', {
+      duration: 800,
+      origin: 'left',
+      distance: '50px',
+      delay: 150
+    });
+  </script>
+  </div>
+</body>
+</html>

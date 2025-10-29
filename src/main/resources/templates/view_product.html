@@ -1,0 +1,162 @@
+<!-- <!DOCTYPE html>
+<html lang="en" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopal Shopping | product view</title>
+</head>
+<body>
+    <div id="content">
+        <section>
+
+            <div class="container mt-70px shadow">
+                <div class="col-md-12 p-5">
+                    <div class="row">
+                        <div class="col-md-6 text-end">
+                            <img src="/images/products/laptop.jpg" width="330px" height="400px" alt="laptop image">
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fs-3">
+                                Laptop
+                            </p>
+                            <p>
+                                <span class="fw-bold">
+                                    Description:
+                                </span>
+                                <br>
+                                Hp Laptop, 256 Gb SSD
+                            </p>
+                            <p>
+                                <span class="fw-bold">
+                                    Product Details: 
+                                </span>
+                                <br>
+                                Status:
+                                <span class="badge bg-success">
+                                    Available
+                                </span>
+                                <span class="badge bg-warning">
+                                    out of stock
+                                </span>
+                                <br>
+                                Category : Laptop
+                                <br>
+                                Policy : 7 Days Replacement & return
+                            </p>
+                            <p class="fs-5 fw-bold">
+                                Price :&nbsp; &nbsp; &nbsp;
+                                <i class="fas fa-rupee-sign"></i>
+                                50000
+                                <span class="fs-6 text-decoration-line-through text-secondary">
+                                    100000
+                                </span>
+                                <span class="fs-6 text-success">
+                                    50% off
+                                </span>
+                            </p>
+                                <div class="row">
+                                <div class="col-md-4 text-success text-center p-2">
+                                    <i class="fas fa-money-bill-wave fa-2x"></i>
+                                    <p>Cash On Delivery</p>
+                                </div>
+                                <div class="col-md-4 text-danger text-center p-2">
+                                    <i class="fas fa-undo-alt fa-2x"></i>
+                                    <p>Return Available</p>
+                                </div>
+                                <div class="col-md-4 text-primary text-center p-2">
+                                    <i class="fas fa-truck-moving fa-2x"></i>
+                                    <p>Free Shipping</p>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-danger col-md-12">
+                                Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gopal Shopping | Product View</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <div id="content">
+    <section class="py-10">
+      <div class="container mx-auto shadow-lg bg-white rounded-2xl pl-0 ml-0 p-8 mt-5">
+        <div th:each="prod, p : ${products}" class="flex flex-col md:flex-row items-center gap-10">
+          
+          <!-- Product Image -->
+          <div class="md:w-1/2 flex justify-center md:justify-end">
+            <img th:src="@{'/images/products/'+${prod.imageName}}" alt="Laptop image" class="w-90 h-96 object-cover rounded-lg">
+          </div>
+
+          <!-- Product Details -->
+          <div class="md:w-1/2 space-y-4">
+            <p class="text-3xl font-semibold">[[${prod.title}]]</p>
+
+            <p>
+              <span class="font-bold">Description:</span><br>
+              [[${prod.description}]]
+            </p>
+
+            <p>
+              <span class="font-bold">Product Details:</span><br>
+              Status:
+              <!-- <span class="inline-block bg-green-500 text-white text-sm px-2 py-1 rounded-md">Available</span> -->
+                <span th:if="${prod.stock > 0}" class="inline-block bg-green-600 text-white border border-green-700 text-sm px-3 py-1 rounded-md">
+                    Available
+                </span>
+
+              <span th:if="${prod.stock == 0}" class="inline-block bg-yellow-400 text-black text-sm px-2 py-1 rounded-md">Out of stock</span>
+              <br>
+              Category: <span class="text-gray-700">[[${prod.category}]]</span><br>
+              Policy: 7 Days Replacement & Return
+            </p>
+
+            <p class="text-lg font-semibold">
+              Price:&nbsp;
+              <i class="fas fa-rupee-sign"></i> [[${prod.discountPrice}]]
+              <span class="text-gray-400 line-through text-sm ml-2 align-middle"><strike>[[${prod.price}]]</strike></span>
+              <span class="text-green-600 text-base ml-1">[[${prod.discount}]]% off</span>
+            </p>
+
+            <!-- Product Features -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 text-center gap-4 mt-6">
+              <div class="text-green-600">
+                <i class="fas fa-money-bill-wave fa-2x"></i>
+                <p>Cash On Delivery</p>
+              </div>
+              <div class="text-red-600">
+                <i class="fas fa-undo-alt fa-2x"></i>
+                <p>Return Available</p>
+              </div>
+              <div class="text-blue-600">
+                <i class="fas fa-truck-moving fa-2x"></i>
+                <p>Free Shipping</p>
+              </div>
+            </div>
+
+            <a href="#" class="block bg-red-600 hover:bg-red-700 text-white text-center font-medium py-3 rounded-lg mt-6 transition">
+              Add to Cart
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

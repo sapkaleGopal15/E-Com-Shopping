@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Gopal Shop | Admin Panel | All Orders</title>
+    <script src="https://kit.fontawesome.com/a2d9d6a60f.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+<div id="content">
+<section class="py-8 px-4">
+    <div class="max-w-7xl mx-auto shadow-2xl bg-white rounded-2xl p-8 transition-all duration-500 hover:shadow-3xl mt-5">
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold bg-linear-to-r from-indigo-600 to-blue-400 bg-clip-text text-transparent">
+                All Orders
+            </h2>
+            <a th:href="@{/admin/}" class="text-white bg-linear-to-r from-indigo-600 to-blue-500 px-4 py-2 rounded-md shadow-md hover:scale-105 transition-all duration-300">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+            </a>
+        </div>
+
+        <hr class="mb-4">
+
+        <!-- Success / Error Messages -->
+        <div>
+            <th:block th:if="${session.succMsg}">
+                <p class="text-green-600 font-semibold text-center mb-3 animate-pulse">
+                    [[${session.succMsg}]]
+                </p>
+                <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+
+            <th:block th:if="${session.errorMsg}">
+                <p class="text-red-600 font-semibold text-center mb-3 animate-pulse">
+                    [[${session.errorMsg}]]
+                </p>
+                <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+            </th:block>
+        </div>
+
+        <!-- Search Form -->
+        <form action="/admin/search-order" method="get" class="flex items-center gap-3 mb-6">
+            <input type="text" name="orderId"
+                   placeholder="Enter order id"
+                   class="grow border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+            <button class="bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-md">
+                Search
+            </button>
+        </form>
+
+        <!-- Orders Table -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                <thead class="bg-linear-to-r from-indigo-600 to-blue-400 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">Order ID</th>
+                    <th class="py-3 px-4 text-left">Delivery Details</th>
+                    <th class="py-3 px-4 text-left">Date</th>
+                    <th class="py-3 px-4 text-left">Product</th>
+                    <th class="py-3 px-4 text-left">Price</th>
+                    <th class="py-3 px-4 text-left">Status</th>
+                    <th class="py-3 px-4 text-left">Action</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+
+                <!-- When search result is available -->
+                <th:block th:if="${srch}">
+                    <th:block th:if="${orderDtls!=null}">
+                        <tr class="hover:bg-blue-50 transition-all">
+                            <td class="py-3 px-4 font-semibold text-gray-700">[[${orderDtls.orderId}]]</td>
+
+                            <td class="py-3 px-4 text-sm leading-relaxed">
+                                <span class="block font-semibold">Name:</span>
+                                [[${orderDtls.orderAddress.firstName+' '+orderDtls.orderAddress.lastName}]] <br>
+                                <span class="block font-semibold">Email:</span> [[${orderDtls.orderAddress.email}]] <br>
+                                <span class="block font-semibold">Mobile:</span> [[${orderDtls.orderAddress.mobileNo}]] <br>
+                                <span class="block font-semibold">Address:</span>
+                                [[${orderDtls.orderAddress.address}]], [[${orderDtls.orderAddress.city}]],
+                                [[${orderDtls.orderAddress.state}]] - [[${orderDtls.orderAddress.pincode}]]
+                            </td>
+
+                            <td class="py-3 px-4">[[${orderDtls.orderDate}]]</td>
+                            <td class="py-3 px-4">[[${orderDtls.product.title}]]</td>
+
+                            <td class="py-3 px-4 text-sm">
+                                Quantity: <b>[[${orderDtls.quantity}]]</b> <br>
+                                Price: ₹[[${orderDtls.price}]] <br>
+                                <span class="font-semibold">Total:</span> ₹[[${orderDtls.quantity * orderDtls.price}]]
+                            </td>
+
+                            <td class="py-3 px-4">
+                                <span th:text="${orderDtls.status}"
+                                      th:classappend="${orderDtls.status == 'Delivered'} ? 'bg-green-500 text-white px-2 py-1 rounded-md text-xs' :
+                                                      ${orderDtls.status == 'Cancelled'} ? 'bg-red-500 text-white px-2 py-1 rounded-md text-xs' :
+                                                      'bg-yellow-400 text-black px-2 py-1 rounded-md text-xs'">
+                                </span>
+                            </td>
+
+                            <td class="py-3 px-4">
+                                <form action="/admin/update-order-status" method="post" class="flex gap-2 items-center">
+                                    <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-400"
+                                            name="st">
+                                        <option>--select--</option>
+                                        <option value="1">In Progress</option>
+                                        <option value="2">Order Received</option>
+                                        <option value="3">Product Packed</option>
+                                        <option value="4">Out for Delivery</option>
+                                        <option value="5">Delivered</option>
+                                        <option value="6">Cancelled</option>
+                                    </select>
+
+                                    <input th:value="${orderDtls.id}" name="id" type="hidden">
+
+                                    <button th:if="${orderDtls.status!='Cancelled' && orderDtls.status!='Delivered'}"
+                                            class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-all duration-300">
+                                        Update
+                                    </button>
+                                    <button th:unless="${orderDtls.status!='Cancelled' && orderDtls.status!='Delivered'}"
+                                            class="bg-gray-300 text-gray-500 px-3 py-1 rounded-lg text-sm cursor-not-allowed">
+                                        Update
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+
+                    <th:block th:unless="${orderDtls!=null}">
+                        <p class="text-center text-red-600 text-lg font-semibold mt-4">[[${errorMsg}]]</p>
+                    </th:block>
+                </th:block>
+
+                <!-- When showing all orders -->
+                <th:block th:unless="${srch}">
+                    <tr th:each="o:${orders}" class="hover:bg-blue-50 transition-all">
+                        <td class="py-3 px-4 font-semibold text-gray-700">[[${o.orderId}]]</td>
+                        <td class="py-3 px-4 text-sm">
+                            <span class="font-semibold">Name:</span> [[${o.orderAddress.firstName+' '+o.orderAddress.lastName}]]<br>
+                            <span class="font-semibold">Email:</span> [[${o.orderAddress.email}]]<br>
+                            <span class="font-semibold">Mobile:</span> [[${o.orderAddress.mobileNo}]]<br>
+                            <span class="font-semibold">Address:</span> [[${o.orderAddress.address}]], [[${o.orderAddress.city}]],
+                            [[${o.orderAddress.state}]] - [[${o.orderAddress.pincode}]]
+                        </td>
+
+                        <td class="py-3 px-4">[[${o.orderDate}]]</td>
+                        <td class="py-3 px-4">[[${o.product.title}]]</td>
+
+                        <td class="py-3 px-4 text-sm">
+                            Quantity: [[${o.quantity}]]<br>
+                            Price: ₹[[${o.price}]]<br>
+                            Total: ₹[[${o.quantity * o.price}]]
+                        </td>
+
+                        <td class="py-3 px-4">
+                            <span th:text="${o.status}"
+                                  th:classappend="${o.status == 'Delivered'} ? 'bg-green-500 text-white px-2 py-1 rounded-md text-xs' :
+                                                  ${o.status == 'Cancelled'} ? 'bg-red-500 text-white px-2 py-1 rounded-md text-xs' :
+                                                  'bg-yellow-400 text-black px-2 py-1 rounded-md text-xs'">
+                            </span>
+                        </td>
+
+                        <td class="py-3 px-4">
+                            <form action="/admin/update-order-status" method="post" class="flex gap-2 items-center">
+                                <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-400" name="st">
+                                    <option>--select--</option>
+                                    <option value="1">In Progress</option>
+                                    <option value="2">Order Received</option>
+                                    <option value="3">Product Packed</option>
+                                    <option value="4">Out for Delivery</option>
+                                    <option value="5">Delivered</option>
+                                    <option value="6">Cancelled</option>
+                                </select>
+                                <input th:value="${o.id}" name="id" type="hidden">
+
+                                <button th:if="${o.status!='Cancelled' && o.status!='Delivered'}"
+                                        class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-all duration-300">
+                                    Update
+                                </button>
+                                <button th:unless="${o.status!='Cancelled' && o.status!='Delivered'}"
+                                        class="bg-gray-300 text-gray-500 px-3 py-1 rounded-lg text-sm cursor-not-allowed">
+                                    Update
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <!-- <th:block th:if="${!srch}">
+            <div class="flex justify-between items-center mt-6 text-sm text-gray-600">
+                <p>Total Orders: <b>[[${totalElements}]]</b></p>
+                <nav>
+                    <ul class="inline-flex items-center -space-x-px">
+                        <li th:classappend="${isFirst} ? 'opacity-40':''">
+                            <a th:href="@{'/admin/orders?pageNo='+${pageNo-1}}"
+                               class="px-3 py-1 border rounded-l-md hover:bg-gray-100">&laquo;</a>
+                        </li>
+
+                        <li th:each="i:${#numbers.sequence(1,totalPages)}"
+                            th:classappend="${pageNo+1==i} ? 'bg-blue-500 text-white':''"
+                            class="border px-3 py-1 hover:bg-blue-100 transition-all">
+                            <a th:href="@{'/admin/orders?pageNo='+${i-1}}">[[${i}]]</a>
+                        </li>
+
+                        <li th:classappend="${isLast} ? 'opacity-40':''">
+                            <a th:href="@{'/admin/orders?pageNo='+${pageNo+1}}"
+                               class="px-3 py-1 border rounded-r-md hover:bg-gray-100">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </th:block> -->
+
+    </div>
+</section>
+</div>
+</body>
+</html>

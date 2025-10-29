@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Gopal Shop | My Order Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a2e0e6ad10.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-linear-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center font-[Poppins]">
+  <div id="content">
+    <section class="w-full mt-14 max-w-6xl bg-white shadow-2xl rounded-2xl p-10 relative overflow-hidden transition-all duration-300 hover:shadow-blue-200">
+    
+    <!-- Back Button -->
+    <a href="javascript:history.back()" 
+       class="absolute top-6 right-6 flex items-center text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 px-4 py-2 rounded-lg shadow-lg">
+      <i class="fa-solid fa-arrow-left mr-2"></i> Back
+    </a>
+
+    <!-- Title -->
+    <div class="text-center mb-10">
+      <h1 class="text-3xl font-bold text-gray-800 tracking-wide animate-fade-in">Checkout Page</h1>
+      <p class="text-gray-500 mt-2">Complete your order details below</p>
+    </div>
+
+    <form action="/user/save-order" method="post" id="orders" novalidate class="grid md:grid-cols-2 gap-10">
+      
+      <!-- Billing Section -->
+      <div class="bg-linear-to-b from-indigo-50 to-white p-6 rounded-xl shadow-md transition-transform duration-300 hover:-translate-y-1 hover:shadow-indigo-200">
+        <h2 class="text-2xl font-semibold text-indigo-700 text-center mb-4">Billing Address</h2>
+        <hr class="mb-4 border-indigo-300">
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">First Name</label>
+            <input type="text" name="firstName" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Last Name</label>
+            <input type="text" name="lastName" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Email</label>
+            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Mobile No</label>
+            <input type="text" name="mobileNo" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Address</label>
+            <input type="text" name="address" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">City</label>
+            <input type="text" name="city" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">State</label>
+            <input type="text" name="state" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Pincode</label>
+            <input type="number" name="pincode" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="bg-linear-to-b from-indigo-50 to-white p-6 rounded-xl shadow-md transition-transform duration-300 hover:-translate-y-1 hover:shadow-indigo-200">
+        <h2 class="text-2xl font-semibold text-indigo-700 text-center mb-4">Payment Summary</h2>
+        <hr class="mb-4 border-indigo-300">
+
+        <div class="bg-white rounded-lg shadow-sm p-5 mb-6 border border-gray-200">
+          <table class="w-full text-gray-700">
+            <tbody>
+              <tr class="border-b">
+                <td class="py-2">Total Price</td>
+                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> [[${orderPrice}]]</td> -->
+              </tr>
+              <tr class="border-b">
+                <td class="py-2">Delivery Fee</td>
+                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> 250</td> -->
+              </tr>
+              <tr class="border-b">
+                <td class="py-2">Tax</td>
+                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> 100</td> -->
+              </tr>
+              <tr>
+                <td class="py-2 font-bold text-indigo-700">Total Amount</td>
+                <!-- <td class="text-right font-bold text-indigo-700"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> [[${totalOrderPrice}]]</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-600 font-medium mb-1">Select Payment Type</label>
+          <select required name="paymentType" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <option value="">--select--</option>
+            <option value="COD">Cash On Delivery</option>
+            <option value="ONLINE">Online Payment</option>
+          </select>
+        </div>
+
+        <button
+          class="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg text-lg font-semibold shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+          <i class="fa-solid fa-cart-shopping mr-2"></i> Place Order
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Simple fade-in animation -->
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.8s ease-out;
+    }
+  </style>
+  </div>
+</body>
+</html>

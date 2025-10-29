@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{index :: parent(~{::#content},~{::title})}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gopal Shop | Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.3/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/scrollreveal"></script>
+   
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  
+<div id="content">
+
+  <!-- Slider -->
+   <div class="relative mt-16 w-full max-w-screen overflow-hidden shadow-xl" id="carousel">
+    <!-- Slides -->
+    <div class="relative h-96">
+      <!-- Slide 1 -->
+      <div class="slide absolute inset-0 opacity-100 transition-opacity duration-700 ease-in-out">
+        <img th:src="@{'/images/slider3.png'}" class="w-full h-full object-cover" alt="Slide 1">
+        <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center px-4">
+          <h2 class="text-3xl font-bold mb-2">First Slide Label</h2>
+          <p class="text-sm md:text-base">Some representative placeholder content for the first slide.</p>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out">
+        <img th:src="@{'/images/home2.png'}" class="w-full h-full object-cover" alt="Slide 2">
+        <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center px-4">
+          <h2 class="text-3xl font-bold mb-2">Second Slide Label</h2>
+          <p class="text-sm md:text-base">Some representative placeholder content for the second slide.</p>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide absolute inset-0 opacity-0 transition-opacity duration-700 ease-in-out">
+        <img th:src="@{'/images/slider1.png'}" class="w-full h-full object-cover" alt="Slide 3">
+        <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center px-4">
+          <h2 class="text-3xl font-bold mb-2">Third Slide Label</h2>
+          <p class="text-sm md:text-base">Some representative placeholder content for the third slide.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicators -->
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
+      <button class="indicator w-3 h-3 bg-white/60 rounded-full hover:bg-white transition" data-slide="0"></button>
+      <button class="indicator w-3 h-3 bg-white/30 rounded-full hover:bg-white transition" data-slide="1"></button>
+      <button class="indicator w-3 h-3 bg-white/30 rounded-full hover:bg-white transition" data-slide="2"></button>
+    </div>
+
+    <!-- Controls -->
+    <button id="prev" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/50 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition">
+      &#10094;
+    </button>
+    <button id="next" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/50 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition">
+      &#10095;
+    </button>
+  </div>
+
+<!-- ======================== Categories ==================================== -->
+
+  <div class="max-w-7xl mx-auto mt-1 p-8 bg-white shadow-2xl rounded-2xl">
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-10 tracking-wide">🛍️ Categories</h2>
+
+    <!-- Category Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 place-items-center">
+
+      <!-- Dynamic Categories from Backend -->
+      <div th:each="cat, c : ${category}"
+        class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img th:src="@{'images/category_img/'+${cat.imageName}}"
+          alt="Category"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md hover:shadow-lg transition-all duration-300" />
+        <a th:href="@{'/products?category='+${cat.name}}"
+           class="text-gray-800 font-semibold hover:text-blue-600 transition-colors duration-300">
+          [[${cat.name}]]
+        </a>
+      </div>
+      
+
+      <!-- Static Examples -->
+      <!-- <div class="flex flex-col items-center justify-center bg-linear-to-b from-pink-100 to-pink-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/beuty.png" alt="Beauty"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Beauty</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/pant.png" alt="Clothes"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Clothes</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-green-100 to-green-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/laptop.jpg" alt="Laptop"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Laptop</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-yellow-100 to-yellow-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/mobile.png" alt="Mobile"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Mobile</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-teal-100 to-teal-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/groccery.jpg" alt="Grocery"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Grocery</p>
+      </div>
+
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-red-100 to-red-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+        <img src="images/category_img/appli.png" alt="Grocery"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
+        <p class="text-gray-800 font-semibold">Electronics</p>
+      </div> -->
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- ✅ Featured Products Section -->
+  <!-- <section class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-8 text-center">Featured Products</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div th:each="product : ${products}" 
+             class="bg-white rounded-xl shadow hover:shadow-2xl transition-all transform hover:-translate-y-2"
+             data-sr="fade-up">
+          <img th:src="@{'/images/products/' + ${product.image}}" alt="Product"
+               class="rounded-t-xl h-56 w-full object-cover">
+          <div class="p-5 space-y-2">
+            <h3 class="text-lg font-semibold text-gray-700" th:text="${product.name}">Product Name</h3>
+            <p class="text-gray-500" th:text="${product.category.name}">Category</p>
+            <div class="flex justify-between items-center">
+              <span class="text-blue-600 font-bold text-lg" th:text="'₹' + ${product.price}">₹999</span>
+              <a th:href="@{'/product/' + ${product.id}}" 
+                 class="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all">
+                 View
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+
+  <div class="max-w-7xl mx-auto bg-white shadow-2xl rounded-2xl p-8">
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-center text-blue-700 mb-10 tracking-wide">
+      ✨ Latest Products
+    </h2>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+      <!-- Dynamic Product Card -->
+       
+      <div th:each="cat, p : ${products}" th:href="@{'/product/view/'+ ${cat.id}}"
+        class="bg-linear-to-b from-blue-100 to-blue-50 rounded-2xl shadow-md p-5 flex flex-col items-center justify-center hover:scale-105 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer group">
+        <a th:href="@{'/product/view/'+ ${cat.id}}">
+        <img th:src="@{'images/products/'+${cat.imageName}}" alt="Product"
+          class="w-40 h-40 object-cover rounded-xl mb-3 group-hover:brightness-110 transition-all duration-300" />
+        <p class="text-lg font-semibold text-gray-800 group-hover:text-blue-700 transition-colors duration-300">
+          [[${cat.title}]]
+        </p>
+        </a>
+      </div>
+      
+      <!-- Example Static Products -->
+      <!-- <div
+        class="bg-linear-to-b from-purple-100 to-purple-50 rounded-2xl shadow-md p-5 flex flex-col items-center justify-center hover:scale-105 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer group">
+        <img src="images/products/laptop.jpg" alt="HP Laptop"
+          class="w-40 h-40 object-cover rounded-xl mb-3 group-hover:brightness-110 transition-all duration-300" />
+        <p class="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition-colors duration-300">
+          HP Laptop
+        </p>
+      </div>
+
+      <div
+        class="bg-linear-to-b from-pink-100 to-pink-50 rounded-2xl shadow-md p-5 flex flex-col items-center justify-center hover:scale-105 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer group">
+        <img src="images/products/laptop.jpg" alt="HP Laptop"
+          class="w-40 h-40 object-cover rounded-xl mb-3 group-hover:brightness-110 transition-all duration-300" />
+        <p class="text-lg font-semibold text-gray-800 group-hover:text-pink-700 transition-colors duration-300">
+          HP Laptop
+        </p>
+      </div>
+
+      <div
+        class="bg-linear-to-b from-green-100 to-green-50 rounded-2xl shadow-md p-5 flex flex-col items-center justify-center hover:scale-105 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer group">
+        <img src="images/products/laptop.jpg" alt="HP Laptop"
+          class="w-40 h-40 object-cover rounded-xl mb-3 group-hover:brightness-110 transition-all duration-300" />
+        <p class="text-lg font-semibold text-gray-800 group-hover:text-green-700 transition-colors duration-300">
+          HP Laptop
+        </p>
+      </div> -->
+
+    </div>
+  </div>
+
+
+  <!-- ✅ Hero Section -->
+  <section class="relative bg-linear-to-r from-blue-500 to-indigo-600 text-white overflow-hidden"
+    style="background-image: url('/images/brackground2.png');">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 py-20">
+      <div class="md:w-1/2 space-y-6" data-sr="fade-right">
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Shop the Best Deals <br> Every Day!
+        </h1>
+        <p class="text-lg opacity-90">
+          Discover top products at unbeatable prices. Fast delivery and easy returns.
+        </p>
+        <a th:href="@{/products}" class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition-all">
+          Shop Now
+        </a>
+      </div>
+      <div class="md:w-1/2 mt-10 md:mt-0" data-sr="fade-left">
+        <img src="/images/hero-banner.png" alt="Shopping" class="w-full drop-shadow-lg">
+      </div>
+    </div>
+  </section>
+
+ 
+  
+  <!-- Smooth fade-in animation -->
+ <style>
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  
+<script>
+
+  // Carousel Script 
+  
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    let current = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.style.opacity = i === index ? '1' : '0';
+        indicators[i].classList.toggle('bg-white', i === index);
+        indicators[i].classList.toggle('bg-white/30', i !== index);
+      });
+      current = index;
+    }
+
+    document.getElementById('prev').addEventListener('click', () => {
+      showSlide((current - 1 + slides.length) % slides.length);
+    });
+    document.getElementById('next').addEventListener('click', () => {
+      showSlide((current + 1) % slides.length);
+    });
+    indicators.forEach((btn, i) => {
+      btn.addEventListener('click', () => showSlide(i));
+    });
+
+    // Auto-slide
+    setInterval(() => {
+      showSlide((current + 1) % slides.length);
+    }, 4000);
+
+
+    ScrollReveal().reveal('[data-sr="fade-right"]', { duration: 800, origin: 'left', distance: '50px', delay: 100 });
+    ScrollReveal().reveal('[data-sr="fade-left"]', { duration: 800, origin: 'right', distance: '50px', delay: 100 });
+    ScrollReveal().reveal('[data-sr="fade-up"]', { duration: 800, origin: 'bottom', distance: '30px', delay: 100 });
+    ScrollReveal().reveal('[data-sr="zoom-in"]', { duration: 800, scale: 0.9, delay: 100 });
+  </script>
+
+  <!-- FontAwesome for icons -->
+  <script src="https://kit.fontawesome.com/a2e0d5efb3.js" crossorigin="anonymous"></script>
+  <!-- ✅ Scroll Reveal Animations -->
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  
+
+</div>
+</body>
+</html>

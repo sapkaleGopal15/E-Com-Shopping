@@ -1,0 +1,168 @@
+/* ========== RESET ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1e1e2f;
+    color: #fff;
+    padding: 10px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Logo */
+.logo a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Search Bar */
+.search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 500px;
+    margin: 0 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+    border: none;
+    background: #f39c12;
+    color: #fff;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #f39c12;
+}
+
+/* Buttons */
+.btn {
+    background: #f39c12;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #ffae42;
+}
+
+/* Cart Icon */
+.cart-icon {
+    position: relative;
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+}
+
+/* User + Cart Section */
+.user-cart {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .search-bar {
+        display: none;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: #1e1e2f;
+        flex-direction: column;
+        width: 220px;
+        text-align: center;
+        padding: 20px 0;
+        display: none;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .mobile-user {
+        display: block;
+        margin-top: 15px;
+    }
+
+    .user-cart .btn {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+}

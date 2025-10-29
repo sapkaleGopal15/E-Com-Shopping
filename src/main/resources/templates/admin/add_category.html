@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gopal Shop | Add Category</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- Smooth animation -->
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-linear-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+  <div id="content">
+    <section class="relative mt-2 p-10 animate-fadeInUp">
+      
+      <!-- ✅ Back Button (top-right corner) -->
+      
+      <!-- ✅ End Back Button -->
+
+      <div class="container mx-auto shadow-2xl bg-white/80 backdrop-blur-lg rounded-2xl p-8 border border-gray-100">
+        
+        <div class="absolute top-6 right-6">
+        <a th:href="@{'/admin/'}" 
+           class="inline-flex items-center space-x-2 bg-linear-to-r from-gray-600 to-gray-800 text-white px-4 py-2 rounded-lg shadow-md hover:from-gray-700 hover:to-black transition-all duration-300">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back</span>
+        </a>
+      </div>
+
+
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">📦 Manage Categories</h2>
+        
+        <!-- Success Message -->
+            <th:block th:if="${session.successMsg}">
+              <p class="text-green-600 font-semibold text-center">[[${session.successMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+            </th:block>
+
+            <!-- Error Message -->
+            <th:block th:if="${session.errorMsg}">
+              <p class="text-red-600 font-semibold text-center">[[${session.errorMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+            </th:block>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Add Category Form -->
+          <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-blue-200 transition-all duration-300">
+            <h3 class="text-xl font-semibold text-center text-gray-700 mb-4">➕ Add Category</h3>
+
+            
+
+            <form th:action="@{'/admin/add-category'}" method="post" enctype="multipart/form-data" class="space-y-4 mt-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
+                <input type="text" name="name" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <div class="flex space-x-6 mt-1">
+                  <label class="flex items-center space-x-2">
+                    <input type="radio" name="isActive" value="true" checked class="text-blue-600 focus:ring-blue-500">
+                    <span class="text-gray-700">Active</span>
+                  </label>
+                  <label class="flex items-center space-x-2">
+                    <input type="radio" name="isActive" value="false" class="text-blue-600 focus:ring-blue-500">
+                    <span class="text-gray-700">Inactive</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Upload Image</label>
+                <input type="file" name="file" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+              </div>
+
+              <button
+                class="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-2 rounded-lg font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transition-all duration-300">
+                Save Category
+              </button>
+            </form>
+          </div>
+
+          <!-- Category Table -->
+          <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-purple-200 transition-all duration-300">
+            <h3 class="text-xl font-semibold text-center text-gray-700 mb-6">📋 Category Details</h3>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full border border-gray-200 text-sm">
+                <thead class="bg-linear-to-r from-indigo-600 to-blue-600 text-white">
+                  <tr>
+                    <th class="px-4 py-3 text-left">Sl No</th>
+                    <th class="px-4 py-3 text-left">Category</th>
+                    <th class="px-4 py-3 text-left">Status</th>
+                    <th class="px-4 py-3 text-left">Image</th>
+                    <th class="px-4 py-3 text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700">
+                  <tr th:each="cat,c:${category}" class="hover:bg-blue-50 transition-all duration-200">
+                    <td class="px-4 py-2">[[${c.count}]]</td>
+                    <td class="px-4 py-2 font-medium">[[${cat.name}]]</td>
+                    <td class="px-4 py-2">
+                      <span th:if="${cat.isActive}" class="inline-block bg-green-500 text-white px-2 py-1 text-xs rounded-md">Active</span>
+                      <span th:if="${!cat.isActive}" class="inline-block bg-red-400 text-white px-2 py-1 text-xs rounded-md">Inactive</span>
+                    </td>
+                    <td class="px-4 py-2">
+                      <img th:src="@{'/images/category_img/'+${cat.imageName}}" alt="Category Image"
+                        class="w-12 h-12 object-cover rounded-lg shadow-sm border border-gray-200">
+                    </td>
+                    <td class="px-4 py-2 flex space-x-3">
+                      <a th:href="@{'/admin/update-category/'+${cat.id}}"
+                        class="text-blue-600 hover:text-blue-800 font-medium transition-all duration-200">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </a>
+                      <a th:href="@{'/admin/delete-category/'+${cat.id}}"
+                        class="text-red-600 hover:text-red-800 font-medium transition-all duration-200">
+                        <i class="fa-solid fa-trash"></i> Delete
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <!-- <div class="flex flex-wrap items-center justify-between mt-6 text-sm text-gray-600">
+            <p>Total Categories: <span class="font-semibold text-gray-800">[[${totalElements}]]</span></p>
+
+            <nav aria-label="Pagination">
+              <ul class="flex items-center space-x-2">
+                <li th:classappend="${isFirst} ? 'opacity-50 cursor-not-allowed':''">
+                  <a th:href="@{'/admin/category?pageNo='+${pageNo-1}}" class="px-3 py-1 border rounded hover:bg-gray-100 transition">&laquo;</a>
+                </li>
+
+                <li th:each="i:${#numbers.sequence(1,totalPages)}"
+                  th:classappend="${pageNo+1==i}?'bg-blue-600 text-white':''"
+                  class="px-3 py-1 border rounded hover:bg-blue-50 transition">
+                  <a th:href="@{'/admin/category?pageNo='+${i-1}}">[[${i}]]</a>
+                </li>
+
+                <li th:classappend="${isLast} ? 'opacity-50 cursor-not-allowed':''">
+                  <a th:href="@{'/admin/category?pageNo='+${pageNo+1}}" class="px-3 py-1 border rounded hover:bg-gray-100 transition">&raquo;</a>
+                </li>
+              </ul>
+            </nav>
+          </div> -->
+
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
