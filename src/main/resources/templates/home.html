@@ -16,7 +16,7 @@
   <!-- Slider -->
    <div class="relative mt-16 w-full max-w-screen overflow-hidden shadow-xl" id="carousel">
     <!-- Slides -->
-    <div class="relative h-96">
+    <div class="relative h-76">
       <!-- Slide 1 -->
       <div class="slide absolute inset-0 opacity-100 transition-opacity duration-700 ease-in-out">
         <img th:src="@{'/images/slider3.png'}" class="w-full h-full object-cover" alt="Slide 1">
@@ -67,19 +67,42 @@
     <!-- Title -->
     <h2 class="text-3xl font-bold text-center text-blue-700 mb-10 tracking-wide">🛍️ Categories</h2>
 
+          
+    
+        
     <!-- Category Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 place-items-center">
+    <div class="grid grid-col sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 place-items-center">
+      <div th:each="cat, c : ${category}">
+      <div class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
 
+      <!-- <div class="flex flex-col justify-center gap-8">
+            <div class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+             -->
       <!-- Dynamic Categories from Backend -->
-      <div th:each="cat, c : ${category}"
-        class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+      <a th:href="@{'/product/view/category/' + ${cat.name}}">
         <img th:src="@{'images/category_img/'+${cat.imageName}}"
           alt="Category"
           class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md hover:shadow-lg transition-all duration-300" />
-        <a th:href="@{'/products?category='+${cat.name}}"
+        <a  th:href="@{'/product/view/category/' + ${cat.name}}" class="text-gray-800 font-semibold hover:text-blue-600 transition-colors duration-300">
+          [[${cat.name}]]
+        </a>
+        </a>
+        </div>
+        
+
+        <!-- <th:block th:if="${cat.isActive == false}">
+          <div class="flex flex-col items-center justify-center bg-linear-to-b from-purple-100 to-purple-50 rounded-full shadow-md p-6 w-40 h-40 hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-2xl cursor-pointer">
+      
+        <img th:src="@{'images/category_img/'+${cat.imageName}}"
+          alt="Category"
+          class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md hover:shadow-lg transition-all duration-300" />
+        <a th:href="@{'/product/view/category/' + ${cat.name}}"
            class="text-gray-800 font-semibold hover:text-blue-600 transition-colors duration-300">
           [[${cat.name}]]
         </a>
+        
+        </div>
+        </th:block> -->
       </div>
       
 
@@ -119,7 +142,7 @@
           class="w-24 h-24 object-cover rounded-full mb-2 border-4 border-white shadow-md" />
         <p class="text-gray-800 font-semibold">Electronics</p>
       </div> -->
-
+      
     </div>
   </div>
 
@@ -220,12 +243,12 @@
         <p class="text-lg opacity-90">
           Discover top products at unbeatable prices. Fast delivery and easy returns.
         </p>
-        <a th:href="@{/products}" class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition-all">
+        <a th:href="@{/product}" class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition-all">
           Shop Now
         </a>
       </div>
       <div class="md:w-1/2 mt-10 md:mt-0" data-sr="fade-left">
-        <img src="/images/hero-banner.png" alt="Shopping" class="w-full drop-shadow-lg">
+        <!-- <img src="/images/hero-banner.png" alt="Shopping" class="w-full drop-shadow-lg"> -->
       </div>
     </div>
   </section>

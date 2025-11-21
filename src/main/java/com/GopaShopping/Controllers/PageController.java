@@ -1,17 +1,38 @@
 package com.GopaShopping.Controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.GopaShopping.Entities.Category;
 import com.GopaShopping.Entities.ContactForm;
 import com.GopaShopping.Entities.Products;
+import com.GopaShopping.Entities.User;
+import com.GopaShopping.Form.UserForm;
+import com.GopaShopping.Repositories.UserRepository;
 import com.GopaShopping.Services.ServiceImpl.AdminServiceImpl;
+import com.GopaShopping.Services.ServiceImpl.UserServiceImpl;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 
 
@@ -26,18 +47,22 @@ public class PageController {
 
     @Autowired
     private AdminServiceImpl adminServiceImpl;
+
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
     
     @GetMapping("/")
     public String homepage(Model model){
-        model.addAttribute("category", adminServiceImpl.getAllCategory());
-        model.addAttribute("products", adminServiceImpl.getAllProducts());
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
+        model.addAttribute("products", adminServiceImpl.getAllActiveProducts());
         return "redirect:/home";
     }
 
     @GetMapping("/home")
     public String index(Model model){
-        model.addAttribute("category", adminServiceImpl.getAllCategory());
-        model.addAttribute("products", adminServiceImpl.getAllProducts());
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
+        model.addAttribute("products", adminServiceImpl.getAllActiveProducts());
         return "home";
     }
 
@@ -70,26 +95,25 @@ public class PageController {
     
     @GetMapping("/product")
     public String product(Model model) {
-        model.addAttribute("category", adminServiceImpl.getAllCategory());
-        model.addAttribute("products", adminServiceImpl.getAllProducts());
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
+        model.addAttribute("products", adminServiceImpl.getAllActiveProducts());
         return "product";
     }
 
     @GetMapping("/product/view/{id}")
     public String productView(@PathVariable Long id, Model model) {
-        model.addAttribute("products", adminServiceImpl.productFindById(id));
+        Products temp = adminServiceImpl.productFindById(id);
+        model.addAttribute("products", temp);
         return "view_product";
     }
 
-    @GetMapping("product/view/category/{category}")
+    @GetMapping("/product/view/category/{category}")
     public String productViewByCategory(@PathVariable String category, Model model){
-        List<Products> products = adminServiceImpl.productsFindByCategory(category);
-        model.addAttribute("product", products);
-        System.out.println("Find products using category : ");
-        for (Products products2 : adminServiceImpl.productsFindByCategory(category)) {
-            System.out.println(products2);
-        }
-        return "view_product";
+        // List<Products> products = adminServiceImpl.productsFindByCategory(category);
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
+        model.addAttribute("products", adminServiceImpl.getAllActiveProductsAndCategory(category));
+        model.addAttribute("paramValue", category);
+        return "product";
     }
 
     @GetMapping("/contact")
@@ -109,6 +133,122 @@ public class PageController {
         return "slides";
     }
     
-    
+    @GetMapping("/register")
+    public String register(Model model) {
+        UserForm userForm = new UserForm();
+        model.addAttribute("userForm", userForm);
+        return "register";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+
+
+    // ===================== Processing ====================
+
+    @PostMapping("/register")
+    public String registerUser(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult result, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException{
+
+        Boolean existUser = userServiceImpl.getUserByEmail(userForm.getEmail());
+        
+        if (existUser) {
+            session.setAttribute("errorMsg", "Email already register!");
+            return "redirect:/register";
+        }
+
+                
+        if (result.hasErrors()) {
+            return "register";
+        }
+
+        if (!userForm.getPassword().equals(userForm.getConfirmPassword())) {
+            session.setAttribute("errorMsg", "Confirm password is not match!");
+            return "register";
+        }
+
+        if (userForm.getContact().length() != 10) {
+            session.setAttribute("errorMsg", "Invalid Mobile number");
+            return "register";
+        }
+
+        if (userForm.getPincode().length() != 6) {
+            session.setAttribute("errorMsg", "Invalid Postal code");
+            return "register";
+        }
+
+        String tempImage = "default_profile_image.png";
+        String image = file == null || file.isEmpty() ? tempImage : file.getOriginalFilename();
+        String userRole = "Guest";
+
+        User user = User.builder()
+            .name(userForm.getName())
+            .contact(userForm.getContact())
+            .email(userForm.getEmail())
+            .address(userForm.getAddress())
+            .city(userForm.getCity())
+            .state(userForm.getState())
+            .pincode(userForm.getPincode())
+            .password(userForm.getPassword())
+            .role(userRole)
+            .profileImage(image)
+            .status("Active")
+            .build();
+
+        User user2 = userServiceImpl.savedUser(user);
+
+        if (!ObjectUtils.isEmpty(user2)) {
+            if (!file.isEmpty()) {
+                File saveFile = new ClassPathResource("static/images").getFile();
+
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+                        + file.getOriginalFilename());
+
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+            session.setAttribute("successMsg", "You have account register Successfully...Please login and continue");
+            return "redirect:/login";
+        }else{
+            session.setAttribute("errorMsg", "Somathing went wrong..!");
+            return "redirect:/register";
+        }
+    }
+
+    @PostMapping("/dologin")
+    public String doLogin(@RequestParam String email, @RequestParam String password, HttpSession session) {
+        
+        if (email.isEmpty() && password.isEmpty()) {
+            session.setAttribute("errorMsg", "Enter email or password..!");
+            return "redirect:/login";
+        }
+
+        if (!userServiceImpl.getUserByEmail(email)) {
+            session.setAttribute("errorMsg", "Invalid Email..!");
+            return "login";
+        }
+
+        User user2 = userServiceImpl.findUserByEmail(email);
+
+        if (!user2.getPassword().equals(password)) {
+            session.setAttribute("errorMsg", "Invalid Password..!");
+            return "login";
+        }
+
+        if (user2.getRole().equals("Admin")) {
+            session.setAttribute("errorMsg", "Invalid User..!");
+            return "login";
+        }
+
+        if (!user2.getStatus().equals("Active")) {
+            session.setAttribute("errorMsg", "Your Account is inActive..!");
+            return "login";
+        }
+
+        session.setAttribute("userId", user2.getId());
+        session.setAttribute("logedUser", user2);
+        return "redirect:/user/dashboard";
+    }
     
 }

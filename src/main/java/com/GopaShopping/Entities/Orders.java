@@ -1,35 +1,34 @@
 package com.GopaShopping.Entities;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
+@Data
 @Entity
-@Getter
-@Setter
-@Builder
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
+    private List<Long> productId;
+
+    private List<String> productNames;
+
     private String name;
 
     private String contact;
-
-    private String email;
 
     private String address;
 
@@ -39,11 +38,12 @@ public class User {
 
     private String pincode;
 
-    private String password;
+    private String paymentMode;
 
-    private String profileImage;
-
-    private String role;
+    private Double orderPrice;
 
     private String status;
+
+    @CreationTimestamp
+    private LocalDate orderDate;
 }

@@ -2,7 +2,7 @@
 <!-- templates/fragments/navbar.html -->
 <div th:fragment="navbar">
 
-<nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300">
+<nav class="fixed top-0 bg-white left-0 w-full bg-none shadow-md z-50 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
       
@@ -14,19 +14,19 @@
 
       <!-- Desktop Menu -->
       <div class="hidden md:flex space-x-6 text-gray-700 font-medium">
-        <a th:href="@{/home}" class="hover:text-blue-600 transition-all duration-300">Home</a>
-        <a th:href="@{/product}" class="hover:text-blue-600 transition-all duration-300">Products</a>
-        <a th:href="@{/about}" class="hover:text-blue-600 transition-all duration-300">About</a>
-        <a th:href="@{/contact}" class="hover:text-blue-600 transition-all duration-300">Contact</a>
+        <a th:href="@{/home}" th:classappend="${paramValue == 'home'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Home</a>
+        <a th:href="@{/product}" th:classappend="${paramValue == 'product'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Products</a>
+        <a th:href="@{/about}" th:classappend="${paramValue == 'about'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">About</a>
+        <a th:href="@{/contact}" th:classappend="${paramValue == 'contact'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Contact</a>
 
         <!-- Dynamic User Menu -->
-        <span th:if="${session.user != null}">
-          <a th:href="@{/profile}" class="hover:text-blue-600 transition-all duration-300">Hi, <span th:text="${session.user.username}">User</span></a>
-          <a th:href="@{/logout}" class="hover:text-red-500 transition-all duration-300">Logout</a>
+        <span th:if="${session.logedUser != null}">
+          <a th:href="@{'/user/dashboard'}" class="hover:text-blue-600 transition-all duration-300">Hi, <span th:text="${session.logedUser.name}">User</span></a>
+          <a th:href="@{'/user/logout'}" class="hover:text-red-500 transition-all duration-300">Logout</a>
         </span>
-        <span th:unless="${session.user != null}">
-          <a th:href="@{/login}" class="hover:text-blue-600 transition-all duration-300">Login</a>
-          <a th:href="@{/register}" class="hover:text-blue-600 transition-all duration-300">Signup</a>
+        <span th:unless="${session.logedUser != null}">
+          <a th:href="@{/login}" class="hover:text-blue-600 transition-all duration-300"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
+          <a th:href="@{/register}" class="hover:text-blue-600 transition-all duration-300"><i class="fa-solid fa-user-plus"></i>Signup</a>
         </span>
       </div>
 
@@ -52,11 +52,11 @@
       <a th:href="@{/about}" class="block py-2 hover:text-blue-600 transition-all">About</a>
       <a th:href="@{/contact}" class="block py-2 hover:text-blue-600 transition-all">Contact</a>
 
-      <span th:if="${session.user != null}">
-        <a th:href="@{/profile}" class="block py-2 hover:text-blue-600">Hi, <span th:text="${session.user.username}">User</span></a>
-        <a th:href="@{/logout}" class="block py-2 text-red-500 hover:text-red-600">Logout</a>
+      <span th:if="${session.logedUser != null}">
+        <a th:href="@{'/user/profile'}" class="block py-2 hover:text-blue-600">Hi, <span th:text="${session.logedUser.name}">User</span></a>
+        <a th:href="@{'/user/logout'}" class="block py-2 text-red-500 hover:text-red-600">Logout</a>
       </span>
-      <span th:unless="${session.user != null}">
+      <span th:unless="${session.logedUser != null}">
         <a th:href="@{/login}" class="block py-2 hover:text-blue-600">Login</a>
         <a th:href="@{/register}" class="block py-2 hover:text-blue-600">Signup</a>
       </span>

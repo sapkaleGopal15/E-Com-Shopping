@@ -2,6 +2,7 @@ package com.GopaShopping.Controllers;
 
 import com.GopaShopping.Entities.Category;
 import com.GopaShopping.Entities.Products;
+import com.GopaShopping.Entities.User;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -85,12 +87,14 @@ public class AdminController {
     }
 
     @GetMapping("/orders")
-    public String orders() {
+    public String orders(Model model) {
+        model.addAttribute("orders", adminServiceImpl.getAllOrders());
         return "admin/orders";
     }
 
     @GetMapping("/users")
-    public String users() {
+    public String users(Model model) {
+        model.addAttribute("users", adminServiceImpl.getAllUsersByRole("Guest"));
         return "admin/users";
     }
 
@@ -274,4 +278,17 @@ public class AdminController {
         }
     }
     
+    @PostMapping("/update-status/{id}/{a}")
+    public String updateStatus(@PathVariable Long id, @PathVariable int a, HttpSession session) {
+        User user = adminServiceImpl.getUserById(id);
+        if (a == 0) {
+            user.setStatus("inActive");
+        }else{
+            user.setStatus("Active");
+        }
+        adminServiceImpl.savedUser(user);
+        session.setAttribute("successMsg", "User status update successful...");
+        return "redirect:/admin/users";
+    }
+
 }

@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+ th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gopal Shop | My Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div id="content">
+    <section class="py-12 md:py-16">
+      <div class="container mx-auto p-8 md:p-12 bg-white shadow-xl rounded-2xl">
+        
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-900">User Dashboard</h1>
+          <p class="text-lg text-gray-600 mt-3">Welcome! Manage your platform with ease. 🚀</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-8">
+
+
+          <a th:href="@{'/user/cart'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-blue-600">
+                  <i class="fa-solid fa-square-plus fa-2x text-blue-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">My Cart</h4>
+                <p class="text-sm text-gray-500 mt-1">My Products</p>
+              </div>
+            </div>
+          </a>
+
+          <a th:href="@{'/user/orders'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-yellow-500">
+                  <i class="fa-solid fa-list fa-2x text-yellow-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">My Orders</h4>
+                <p class="text-sm text-gray-500 mt-1">Manage Orders or View Orders</p>
+              </div>
+            </div>
+          </a>
+
+          <a th:href="@{'/user/profile'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-green-600">
+                  <i class="fa-solid fa-table-list fa-2x text-green-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">Profile</h4>
+                <p class="text-sm text-gray-500 mt-1">Browse and edit detail</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- <a th:href="@{'/admin/orders'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-orange-500">
+                  <i class="fa-solid fa-box-open fa-2x text-orange-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">Orders</h4>
+                <p class="text-sm text-gray-500 mt-1">Manage customer orders</p>
+              </div>
+            </div>
+          </a>
+
+          <a th:href="@{'/admin/users'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-teal-600">
+                  <i class="fa-solid fa-users fa-2x text-teal-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">Users</h4>
+                <p class="text-sm text-gray-500 mt-1">View and manage users</D>
+              </div>
+            </div>
+          </a>
+
+          <a th:href="@{'/admin/add-admin'}" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-purple-600">
+                  <i class="fa-solid fa-user-plus fa-2x text-purple-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">Add Admin</h4>
+                <p class="text-sm text-gray-500 mt-1">Appoint new moderators</p>
+              </div>
+            </div>
+          </a>
+
+          <a href="/admin/users?type=2" class="group block no-underline">
+            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 ease-in-out">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:bg-red-600">
+                  <i class="fa-solid fa-user-shield fa-2x text-red-600 transition-all duration-300 group-hover:text-white"></i>
+                </div>
+                <h4 class="text-xl font-semibold text-gray-800">Admin</h4>
+                <p class="text-sm text-gray-500 mt-1">Review admin accounts</p>
+              </div>
+            </div>
+          </a> -->
+
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html> 

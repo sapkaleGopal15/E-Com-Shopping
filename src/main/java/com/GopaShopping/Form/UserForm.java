@@ -18,23 +18,31 @@ import lombok.ToString;
 @ToString
 public class UserForm {
 
-    @NotBlank(message = "First name is required")
-    private String fName;
+    @NotBlank(message = "Name is required")
+    private String name;
 
-    @NotBlank(message = "last name is required")
-    private String lName;
+    @NotBlank(message = "City is required")
+    private String city;
 
     @NotBlank(message = "Contact number is required")
-    @Pattern(regexp = "[789][0-9]{9}", message = "please enter a valid number")
     private String contact;
 
-    @NotBlank(message = "email is required")
+    @NotBlank(message = "Email is required")
     @Email
     private String email;
 
-    @NotBlank(message = "address is required")
+    @NotBlank(message = "Address is required")
     private String address;
 
-    @NotBlank(message = "password is required")
+    @NotBlank(message = "State is required")
+    private String state;
+
+    @NotBlank(message = "Pincode is reqiured")
+    private String pincode;
+
+    @NotBlank(message = "Password is required")
     private String password;
+
+    @NotBlank(message = "Confirm password is required")
+    private String confirmPassword;
 }

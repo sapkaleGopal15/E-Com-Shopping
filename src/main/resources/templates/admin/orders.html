@@ -137,32 +137,31 @@
                 <!-- When showing all orders -->
                 <th:block th:unless="${srch}">
                     <tr th:each="o:${orders}" class="hover:bg-blue-50 transition-all">
-                        <td class="py-3 px-4 font-semibold text-gray-700">[[${o.orderId}]]</td>
+                        <td class="py-3 px-4 font-semibold text-gray-700">[[${o.id}]]</td>
                         <td class="py-3 px-4 text-sm">
-                            <span class="font-semibold">Name:</span> [[${o.orderAddress.firstName+' '+o.orderAddress.lastName}]]<br>
-                            <span class="font-semibold">Email:</span> [[${o.orderAddress.email}]]<br>
-                            <span class="font-semibold">Mobile:</span> [[${o.orderAddress.mobileNo}]]<br>
-                            <span class="font-semibold">Address:</span> [[${o.orderAddress.address}]], [[${o.orderAddress.city}]],
-                            [[${o.orderAddress.state}]] - [[${o.orderAddress.pincode}]]
+                            <span class="font-semibold">Name:</span> [[${o.name}]]<br>
+                           
+                            <span class="font-semibold">Mobile:</span> [[${o.contact}]]<br>
+                            <span class="font-semibold">Address:</span> [[${o.address}]], [[${o.city}]],
+                            [[${o.state}]] - [[${o.pincode}]]
                         </td>
 
                         <td class="py-3 px-4">[[${o.orderDate}]]</td>
-                        <td class="py-3 px-4">[[${o.product.title}]]</td>
+                        <td class="py-3 px-4">[[${o.productNames}]]</td>
 
                         <td class="py-3 px-4 text-sm">
-                            Quantity: [[${o.quantity}]]<br>
-                            Price: ₹[[${o.price}]]<br>
-                            Total: ₹[[${o.quantity * o.price}]]
+                            Price: ₹[[${o.orderPrice}]]<br>
+                            Payment Mode: [[${o.paymentMode}]]
                         </td>
 
-                        <td class="py-3 px-4">
+                        <!-- <td class="py-3 px-4">
                             <span th:text="${o.status}"
                                   th:classappend="${o.status == 'Delivered'} ? 'bg-green-500 text-white px-2 py-1 rounded-md text-xs' :
                                                   ${o.status == 'Cancelled'} ? 'bg-red-500 text-white px-2 py-1 rounded-md text-xs' :
                                                   'bg-yellow-400 text-black px-2 py-1 rounded-md text-xs'">
                             </span>
-                        </td>
-
+                        </td> -->
+                        <td>Delivered</td>
                         <td class="py-3 px-4">
                             <form action="/admin/update-order-status" method="post" class="flex gap-2 items-center">
                                 <select class="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-400" name="st">

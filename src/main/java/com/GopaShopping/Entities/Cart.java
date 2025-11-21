@@ -1,6 +1,5 @@
 package com.GopaShopping.Entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,32 +9,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class Products {
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
 
-    private String description;
-
-    private Boolean isActive;
-
-    private String category;
+    private String image;
 
     private Double price;
 
-    private Double discount;
+    private int quantity;
 
-    private Double discountPrice;
+    private Double totalPrice;
 
-    private int stock;
+    private Double totalOrderPrice;
 
-    private String imageName;
+    private Long userId;
+
+    private Long productId;
 }

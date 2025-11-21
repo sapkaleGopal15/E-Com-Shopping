@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.GopaShopping.Entities.Category;
+import com.GopaShopping.Entities.Orders;
 import com.GopaShopping.Entities.Products;
+import com.GopaShopping.Entities.User;
 import com.GopaShopping.Repositories.CategoryRepository;
+import com.GopaShopping.Repositories.OrdersRepoitory;
 import com.GopaShopping.Repositories.ProductsRepository;
+import com.GopaShopping.Repositories.UserRepository;
 import com.GopaShopping.Services.AdminServices;
 
 @Service
@@ -20,6 +24,12 @@ public class AdminServiceImpl implements AdminServices{
 
     @Autowired
     private ProductsRepository productsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private OrdersRepoitory ordersRepoitory;
 
 
     // ================== Categories =======================
@@ -55,6 +65,11 @@ public class AdminServiceImpl implements AdminServices{
         return category;
     }
 
+    @Override
+    public List<Category> getAllActiveCategory() {
+        return categoryRepository.findByIsActiveTrue();
+    }
+
 
     // ================== Products ==========================
 
@@ -88,5 +103,40 @@ public class AdminServiceImpl implements AdminServices{
     public List<Products> productsFindByCategory(String category) {
         return productsRepository.findByCategory(category);
     }
-    
+
+    @Override
+    public List<Products> getAllActiveProducts() {
+        return productsRepository.findByIsActiveTrue();
+    }
+
+    @Override
+    public List<Products> getAllActiveProductsAndCategory(String category) {
+        return productsRepository.findByIsActiveTrueAndCategory(category);
+    }
+
+
+    // =========================== Orders =========================
+
+    @Override
+    public List<Orders> getAllOrders() {
+        return ordersRepoitory.findAll();
+    }
+
+
+    // ========================== Users =======================
+
+    @Override
+    public List<User> getAllUsersByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User savedUser(User user) {
+        return userRepository.save(user);
+    }
 }

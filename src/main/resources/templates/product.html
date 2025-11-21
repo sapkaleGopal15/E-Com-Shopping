@@ -190,6 +190,8 @@
 
 
 <div class="w-full bg-blue-600 p-5 mt-15">
+
+  
   
   <div class="flex justify-center">
     <form class="w-full max-w-3xl">
@@ -210,6 +212,15 @@
   </div>
 </div>
 
+<th:block th:if="${session.successMsg}">
+  <p class="bg-green-100 text-green-700 text-center px-4 mt-2 py-2 rounded-lg font-semibold">[[${session.successMsg}]]</p>
+  <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+</th:block>
+
+<th:block th:if="${session.errorMsg}">
+  <p class="bg-red-100 text-red-700 text-center mt-2 px-4 py-2 rounded-lg font-semibold">[[${session.errorMsg}]]</p>
+  <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+</th:block>
 
 <div class="w-full mt-5 px-4 lg:px-10">
   <div class="flex flex-col lg:flex-row gap-6">
@@ -219,12 +230,16 @@
       <div class="bg-white shadow-lg rounded-lg p-4">
         <h2 class="text-xl font-semibold mb-4 border-b pb-2 text-blue-600">Categories</h2>
         <ul class="space-y-2">
-          <li th:href="@{#}" class="block px-3 py-2 bg-blue-600 text-white rounded-md font-medium transition">All</li>
-          <li th:each="cat, c : ${category}">
-            <a th:href="@{'/product/view/category/' + ${cat.name}}" class="block px-3 py-2 text-gray-800 rounded-md font-medium hover:bg-blue-700 hover:text-white transition">
+          <a th:href="@{/product}" th:value="${all}"
+           th:classappend="${paramValue == all} ? 'bg-blue-600 text-white' : ''" class="block px-3 py-2 rounded-md font-medium transition">
+           All
+          </a>
+          <a th:each="cat, c : ${category}"
+             th:href="@{'/product/view/category/' + ${cat.name}}"
+            th:classappend="${paramValue == cat.name} ? 'bg-blue-600 text-white':''"
+            class="block px-3 py-2 text-gray-800 rounded-md font-medium hover:bg-blue-700 hover:text-white transition">
               [[${cat.name}]]
             </a>
-          </li>
         </ul>
       </div>
     </div>
@@ -239,6 +254,7 @@
 
           
           <div th:each="prod, p : ${products}" class="bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            
             <img th:src="@{'/images/products/'+${prod.imageName}}" alt="Laptop" class="w-full h-40 object-cover rounded-t-lg">
             <div class="p-4 text-center">
               <p class="font-semibold text-gray-800 mb-2">[[${prod.title}]]</p>
@@ -253,64 +269,14 @@
             </div>
           </div>
 
-          <!-- Category products show -->
-          <div th:each="prod, p : ${product}" class="bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <img th:src="@{'/images/products/'+${prod.imageName}}" alt="Laptop" class="w-full h-40 object-cover rounded-t-lg">
-            <div class="p-4 text-center">
-              <p class="font-semibold text-gray-800 mb-2">[[${prod.title}]]</p>
-              <p class="text-gray-900 text-2xl">
-                ₹ [[${prod.discountPrice}]] 
-                <span class="text-green-600 text-sm">[[${prod.discount}]]% off</span>
-              </p>
-              <a th:href="@{'/product/view/'+${prod.id}}"
-                 class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-200">
-                View Details
-              </a>
-            </div>
-          </div>
           
-          <!-- <div class="bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <img src="/images/products/laptop.jpg" alt="Laptop" class="w-full h-40 object-cover rounded-t-lg">
-            <div class="p-4 text-center">
-              <p class="font-semibold text-gray-800 mb-2">Laptop</p>
-              <p class="text-gray-600 text-sm mb-3">
-                ₹500 <span class="text-green-600 text-sm">20% off</span>
-              </p>
-              <a href="#"
-                 class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-200">
-                View Details
-              </a>
-            </div>
-          </div>
+          
 
-          <div class="bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <img src="/images/products/laptop.jpg" alt="Laptop" class="w-full h-40 object-cover rounded-t-lg">
-            <div class="p-4 text-center">
-              <p class="font-semibold text-gray-800 mb-2">Laptop</p>
-              <p class="text-gray-600 text-sm mb-3">
-                ₹500 <span class="text-green-600 text-sm">20% off</span>
-              </p>
-              <a href="#"
-                 class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-200">
-                View Details
-              </a>
-            </div>
-          </div>
+        
 
-          <div class="bg-gray-50 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            <img src="/images/products/laptop.jpg" alt="Laptop" class="w-full h-40 object-cover rounded-t-lg">
-            <div class="p-4 text-center">
-              <p class="font-semibold text-gray-800 mb-2">Laptop</p>
-              <p class="text-gray-600 text-sm mb-3">
-                ₹500 <span class="text-green-600 text-sm">20% off</span>
-              </p>
-              <a href="#"
-                 class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-200">
-                View Details
-              </a>
-            </div>
-          </div> -->
 
+          
+          
         </div>
       </div>
     </div>
@@ -321,75 +287,6 @@
 
 
 
-
-<!-- <div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
-
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-      <div class="group relative">
-        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg" alt="Front of men&#039;s Basic Tee in black." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Black</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg" alt="Front of men&#039;s Basic Tee in white." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Aspen White</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg" alt="Front of men&#039;s Basic Tee in dark gray." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Basic Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Charcoal</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-      <div class="group relative">
-        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg" alt="Front of men&#039;s Artwork Tee in peach with white and brown dots forming an isometric cube." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-        <div class="mt-4 flex justify-between">
-          <div>
-            <h3 class="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" class="absolute inset-0"></span>
-                Artwork Tee
-              </a>
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">Iso Dots</p>
-          </div>
-          <p class="text-sm font-medium text-gray-900">$35</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 
   <!-- ✅ Scroll Animations -->

@@ -23,54 +23,58 @@
       <p class="text-gray-500 mt-2">Complete your order details below</p>
     </div>
 
-    <form action="/user/save-order" method="post" id="orders" novalidate class="grid md:grid-cols-2 gap-10">
+    <form th:action="@{'/user/save-order'}" method="post" id="orders" class="grid md:grid-cols-2 gap-10">
       
       <!-- Billing Section -->
       <div class="bg-linear-to-b from-indigo-50 to-white p-6 rounded-xl shadow-md transition-transform duration-300 hover:-translate-y-1 hover:shadow-indigo-200">
         <h2 class="text-2xl font-semibold text-indigo-700 text-center mb-4">Billing Address</h2>
-        <hr class="mb-4 border-indigo-300">
+        <hr class="mb-12 border-indigo-300">
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-gray-600 font-medium mb-1">First Name</label>
-            <input type="text" name="firstName" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <label class="block text-gray-600 font-medium mb-1">Full Name</label>
+            <input type="text" th:value="${user.name}" name="name" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
-          <div>
+          <!-- <div>
             <label class="block text-gray-600 font-medium mb-1">Last Name</label>
             <input type="text" name="lastName" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          </div> -->
+          <div>
+            <label class="block text-gray-600 font-medium mb-1">Mobile No</label>
+            <input type="number" name="contact" th:value="${user.contact}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mt-4">
+        <!-- <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label class="block text-gray-600 font-medium mb-1">Email</label>
-            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="email" name="email" th:value="${user.email}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
           <div>
             <label class="block text-gray-600 font-medium mb-1">Mobile No</label>
-            <input type="text" name="mobileNo" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="text" name="mobileNo" th:value="${user.contact}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
-        </div>
+        </div> -->
 
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label class="block text-gray-600 font-medium mb-1">Address</label>
-            <input type="text" name="address" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="text" name="address" th:value="${user.address}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
           <div>
             <label class="block text-gray-600 font-medium mb-1">City</label>
-            <input type="text" name="city" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="text" name="city" th:value="${user.city}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label class="block text-gray-600 font-medium mb-1">State</label>
-            <input type="text" name="state" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="text" name="state" th:value="${user.state}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
           <div>
             <label class="block text-gray-600 font-medium mb-1">Pincode</label>
-            <input type="number" name="pincode" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <input type="number" name="pincode" th:value="${user.pincode}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
         </div>
       </div>
@@ -85,27 +89,27 @@
             <tbody>
               <tr class="border-b">
                 <td class="py-2">Total Price</td>
-                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> [[${orderPrice}]]</td> -->
+                <td class="text-right font-semibold">₹ [[${orderPrice}]]</td>
               </tr>
               <tr class="border-b">
                 <td class="py-2">Delivery Fee</td>
-                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> 250</td> -->
+                <td class="text-right font-semibold">₹ 50</td>
               </tr>
               <tr class="border-b">
                 <td class="py-2">Tax</td>
-                <!-- <td class="text-right font-semibold"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> 100</td> -->
+                <td class="text-right font-semibold">₹ 20</td>
               </tr>
               <tr>
                 <td class="py-2 font-bold text-indigo-700">Total Amount</td>
-                <!-- <td class="text-right font-bold text-indigo-700"><th:block th:utext="${@commnServiceImpl.rupeeSign()}"></th:block> [[${totalOrderPrice}]]</td> -->
+                <td name="orderPrice" class="text-right font-bold text-indigo-700">₹ [[${userPayPrice}]]</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-600 font-medium mb-1">Select Payment Type</label>
-          <select required name="paymentType" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          <label for="paymentMode" class="block text-gray-600 font-medium mb-1">Select Payment Type</label>
+            <select required name="paymentMode" class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
             <option value="">--select--</option>
             <option value="COD">Cash On Delivery</option>
             <option value="ONLINE">Online Payment</option>

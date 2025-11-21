@@ -8,9 +8,13 @@ import com.GopaShopping.Services.CommonService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.Value;
 
 @Service
 public class CommonServiceImpl implements CommonService{
+
+    // @Value("${rupee.sign}")
+	// public String rupeeSign;
 
     @Override
     public void removeMessage() {
@@ -20,5 +24,10 @@ public class CommonServiceImpl implements CommonService{
         session.removeAttribute("successMsg");
         session.removeAttribute("errorMsg");
     }
+
+    // @Override
+    // public String rupeeSign() {
+    //     return rupeeSign;
+    // }
 
 }       
