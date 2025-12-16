@@ -12,8 +12,7 @@ import com.GopaShopping.Entities.Cart;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    public List<Cart> findByUserId(Long userId);
-    //public Cart findByuserId(Long userId);
+    public List<Cart> findByUserIdOrderByIdDesc(Long userId);
 
     @Modifying
     @Transactional

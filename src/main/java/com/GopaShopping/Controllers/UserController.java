@@ -1,6 +1,5 @@
 package com.GopaShopping.Controllers;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,17 +25,11 @@ import com.GopaShopping.Entities.Cart;
 import com.GopaShopping.Entities.Orders;
 import com.GopaShopping.Entities.Products;
 import com.GopaShopping.Entities.User;
-import com.GopaShopping.Form.LoginUserForm;
 import com.GopaShopping.Form.UpdateUserPassword;
-import com.GopaShopping.Form.UserForm;
 import com.GopaShopping.Services.ServiceImpl.AdminServiceImpl;
 import com.GopaShopping.Services.ServiceImpl.UserServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
-
-
-
-
 
 @Controller
 @RequestMapping("/user")
@@ -48,56 +41,11 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/demo")
-    public String demoPage() {
-        return "demo";
-    }
-
-    @GetMapping("/gopal")
-    public String gopalPage() {
-        return "gopal";
-    }
-    
-
-    
-
-    @RequestMapping("/index")
-    public String requestMethodName() {
-        return "index";
-    }
-
-
-    @GetMapping("/login")
-    public String userLogin(Model model) {
-        LoginUserForm loginUserForm = new LoginUserForm();
-        model.addAttribute("loginUserForm", loginUserForm);
-        return "loginUser";
-    }
-
-
-    
-    
-    
-
-
-    @GetMapping("/add")
-    public String addUser(Model model){
-        UserForm userForm = new UserForm();
-        model.addAttribute("userForm", userForm);
-        return "addUser";
-    }
-
-    
-
-
-
-
-
-
 // =========================== User Controller ============================== 
 
     @GetMapping("/dashboard")
-    public String userDashboard() {
+    public String userDashboard(Model model) {
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/dashboard";
     }
 
@@ -111,17 +59,27 @@ public class UserController {
             cart.setTotalOrderPrice(orderPrice);
             userServiceImpl.saveCart(cart);
         }
-        System.out.println("Total Order Price by Order : " +orderPrice);
+       
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         model.addAttribute("products", allProduct);
         model.addAttribute("totalOrderPrice", orderPrice);
         return "user/cart";
     }
 
     @GetMapping("/add-to-cart/{id}")
-    public String userCartAddProduct(@PathVariable Long id, Model model, HttpSession session) {
+    public String userCartAddProduct(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "Size", defaultValue = "10") int size, @PathVariable Long id, Model model, HttpSession session) {
        
         Cart cart = new Cart();
         Products products = adminServiceImpl.productFindById(id);
+
+        Long existUser = (Long) session.getAttribute("userId");
+        User user = userServiceImpl.getUserById(existUser);
+ 
+        if (user.getRole().equals("Admin")) {
+            model.addAttribute("products", products);
+            session.setAttribute("errorMsg", "Admin not added product to cart");
+            return "view_product";
+        }
 
         List<Cart> lisCarts = userServiceImpl.getAllCartProductsByUserId((Long) session.getAttribute("userId"));
 
@@ -133,10 +91,6 @@ public class UserController {
             }
         }
 
-        // if (cart.getTotalOrderPrice() == null) {
-        //     cart.setTotalOrderPrice(0.0);
-        // }
-
         cart.setName(products.getTitle());
         cart.setImage(products.getImageName());
         cart.setPrice(products.getDiscountPrice());
@@ -144,14 +98,12 @@ public class UserController {
         cart.setTotalPrice(cart.getPrice() * cart.getQuantity());
         cart.setTotalOrderPrice(0.0);
         cart.setProductId(id);
-        cart.setUserId((Long) session.getAttribute("userId"));
-
-        // orderPrice = cart.getTotalOrderPrice();
+        cart.setUserId(existUser);
 
         Cart saveCart = userServiceImpl.saveCart(cart);
 
         model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
-        model.addAttribute("products", adminServiceImpl.getAllActiveProducts());
+        model.addAttribute("pageProducts", adminServiceImpl.getAllActiveProducts(page, size));
         session.setAttribute("successMsg", "Product added to cart...");
         return "redirect:/product";
     }
@@ -161,33 +113,21 @@ public class UserController {
 		userServiceImpl.updateQuantity(sy, cid);
 		return "redirect:/user/cart";
 	}
+
+    @GetMapping("/deleteCartProduct")
+    public String deleteCartProduct(@RequestParam String sy ,@RequestParam Long cid, HttpSession session) {
+        userServiceImpl.deleteCartProduct(sy, cid);
+        session.setAttribute("successMsg", "Product Remove from cart");
+        return "redirect:/user/cart";
+    }
     
     @GetMapping("/orders")
     public String userOrders(HttpSession session, Model model) {
         Long existUser = (Long) session.getAttribute("userId");
-        List<Orders> orders = userServiceImpl.ordersFindByUserId(existUser);
-        // List<List<String>> bigList = new ArrayList<>();
-        // for (Orders orders2 : orders) {
+        List<Orders> orders = userServiceImpl.ordersFindByUserId(existUser);       
 
-            
-        //     List<Long> product =  orders2.getProductId();
-        //     List<Products> products = new ArrayList<>();
-        //     List<String> prodName = new ArrayList<>();
-        //     for (Long element : product) {
-        //         products.add(adminServiceImpl.productFindById(element));
-        //     }
-        //     for (Products string : products) {
-        //         prodName.add(string.getTitle());
-        //     }
-        //     bigList.add(prodName);
-        // }
-
-        
-
-    
-
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         model.addAttribute("orders", orders);
-       //model.addAttribute("productsName", bigList);
         return "user/my_orders";
     }
 
@@ -205,6 +145,7 @@ public class UserController {
         model.addAttribute("orderPrice", orderPrice);
         model.addAttribute("user", existUser);
         model.addAttribute("userPayPrice", userPayPrice);
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/order";
     }
 
@@ -221,9 +162,10 @@ public class UserController {
             prodId.add(cart.getProductId());
             productNames.add(cart.getName());
         }
+        orders.setCancelReason("Product pass");
         orders.setUserId(existUserId);
         orders.setOrderPrice(orderPrice + 50 + 20);
-        orders.setStatus("Delivered");
+        orders.setStatus("In Progress");
         orders.setProductId(prodId);
         orders.setProductNames(productNames);
 
@@ -231,9 +173,10 @@ public class UserController {
 
         if (orders2.getPaymentMode().equals("ONLINE")) {
             model.addAttribute("orderPrice", orders2.getOrderPrice());
+            model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
             return "user/onlinePayment";
         }
-        userServiceImpl.deleteCartByUserId(existUserId);
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/success";
     }
 
@@ -241,6 +184,7 @@ public class UserController {
     public String onlinePayment(@PathVariable Long id, HttpSession session, Model model) {
         Orders orders = userServiceImpl.findById(id);
         model.addAttribute("orderPrice", orders.getOrderPrice());
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/success";
     }
 
@@ -248,6 +192,7 @@ public class UserController {
     public String profile(HttpSession session, Model model) {
         Long id = (Long) session.getAttribute("userId");
         model.addAttribute("logedUser", userServiceImpl.getUserById(id));
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/profile";
     }
 
@@ -273,13 +218,15 @@ public class UserController {
                     + file.getOriginalFilename());
 
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
         }
         session.setAttribute("successMsg", "Profile update successful...");
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "redirect:/user/profile";
     }
 
     @PostMapping("/update-password/{id}") 
-    public String updatePassword(@PathVariable Long id, @ModelAttribute UpdateUserPassword updatePassword, HttpSession session) {
+    public String updatePassword(@PathVariable Long id, Model model, @ModelAttribute UpdateUserPassword updatePassword, HttpSession session) {
         User user = userServiceImpl.getUserById(id);
 
         if (!user.getPassword().equals(updatePassword.getCurrentPassword())) {
@@ -294,11 +241,13 @@ public class UserController {
         user.setPassword(updatePassword.getNewPassword());
         userServiceImpl.savedUser(user);
         session.setAttribute("successMsg", "Password update successful...");
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "redirect:/user/profile";
     }
 
     @GetMapping("/success")
-    public String orderSuccess() {
+    public String orderSuccess(Model model) {
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
         return "user/success";
     }
 
@@ -309,5 +258,18 @@ public class UserController {
     }
 
 
+    @PostMapping("/order/update-status")
+    public String orderUpdateStatus(@RequestParam Long orderId, @RequestParam("reason") String reason, Model model, HttpSession session) {
+
+        Orders orders = userServiceImpl.findById(orderId);
+
+        orders.setStatus("Cancelled");
+        orders.setCancelReason(reason);
+
+        userServiceImpl.saveOrders(orders);
+        session.setAttribute("successMsg", "Order Cancelled Successful...");
+        model.addAttribute("category", adminServiceImpl.getAllActiveCategory());
+        return "redirect:/user/orders";
+    }
 
 }

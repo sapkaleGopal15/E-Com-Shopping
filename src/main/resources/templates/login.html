@@ -10,17 +10,16 @@
     <div id="content">
 	<section class="w-full px-6 py-12 mt-10">
 		<div style="background-image: url('/images/backgraound.png'); width: 950px; height: 550px;" class="max-w-6xl mx-auto bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 transition-all duration-700 hover:shadow-indigo-400/50">
-			<!-- Left Side Image -->
 			<div class="w-full md:w-1/2 flex justify-center animate-fadeIn">
 			</div>
 
-			<!-- Right Side Form -->
 			<div class="w-full md:w-1/2 border-2 border-black hover:border-blue-600 rounded-2xl shadow shadow-gray-800 p-8 transition-transform duration-500 hover:-translate-y-1">
+				<div>
+					<a th:href="@{'/login'}" th:classappend="${loginType == 'user'} ? 'border-b-4 text-indigo-700' : ''" class="text-blue-600 hover:text-indigo-700 transition-all duration-300 text-3xl font-extrabold p-12 mb-2 pt-0 pb-0">User</a>
+					<a th:href="@{'/admin-login'}" th:classappend="${loginType == 'admin'} ? 'border-b-4 text-indigo-700' : ''" class="text-blue-600 hover:text-indigo-700 transition-all duration-300 text-3xl font-extrabold p-9 mb-2 pt-0 pb-0">Admin</a>
+					<p class="text-gray-600 text-center mt-2">Join us and start shopping today!</p>
+				</div>
 				<div class="text-center mb-6">
-					<h2 class="text-3xl font-extrabold text-indigo-700 mb-2">Login </h2>
-					<p class="text-gray-600">Join us and start shopping today!</p>
-
-					<!-- Success/Error Messages -->
 					<th:block th:if="${session.successMsg}">
 						<p class="text-green-800 bg-green-100 rounded font-semibold mt-2">[[${session.successMsg}]]</p>
 						<th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
@@ -34,41 +33,36 @@
 
 				<form th:action="@{'/dologin'}" method="post" id="userRegister" novalidate class="space-y-5">
 
-					<!-- Email -->
 					<div>
 						<label class="block text-gray-700 font-medium mb-1">Email</label>
 						<input required name="email" type="email"
 							class="w-full border-2 border-gray-600 hover:border-blue-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 
-                    <!-- Password -->
 					<div>
 						<label class="block text-gray-700 font-medium mb-1">Password</label>
 						<input required name="password" type="password"
 							class="w-full border-2 border-gray-600 hover:border-blue-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 
-					<!-- Register Button -->
 					<button type="submit"
 						class="w-full bg-linear-to-r from-indigo-600 to-blue-500 text-white font-semibold py-3 rounded-lg shadow-lg hover:from-indigo-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]">
 						Login
 					</button>
 				</form>
 
-				<!-- Footer -->
 				<div class="text-center mt-6 text-gray-700">
                     <p>
-						<a href="/login" class="text-indigo-600 font-semibold hover:underline">Forget password?</a>
+						<a th:href="@{'/forget-password'}" class="text-indigo-600 font-semibold hover:underline">Forget password?</a>
 					</p>
-					<p>You don't have an account?
-						<a th:href="@{'/register'}" class="text-indigo-600 font-semibold hover:underline">Register</a>
+					<p>New User ?
+						<a th:href="@{'/register'}" class="text-indigo-600 font-semibold hover:underline">Register Now</a>
 					</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Optional small fade-in animation -->
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
 			document.querySelectorAll(".animate-fadeIn").forEach(el => {

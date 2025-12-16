@@ -1,6 +1,5 @@
 package com.GopaShopping.Entities;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Orders {
+public class Orders{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +42,8 @@ public class Orders {
     private Double orderPrice;
 
     private String status;
+
+    private String cancelReason;
 
     @CreationTimestamp
     private LocalDate orderDate;

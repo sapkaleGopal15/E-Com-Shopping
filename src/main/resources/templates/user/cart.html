@@ -12,7 +12,6 @@
   <section class="py-10 mt-10">
     <div class="container mx-auto px-4">
 
-      <!-- Back Button -->
       <div class="flex justify-end mb-6">
         <a href="/user/dashboard"
            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
@@ -20,25 +19,22 @@
         </a>
       </div>
 
-      <!-- Cart Card -->
       <div class="bg-white shadow-2xl rounded-2xl p-8 pt-2 max-w-6xl mx-auto border border-gray-100 transition transform hover:shadow-indigo-200 duration-300">
 
-        <!-- Header -->
         <div class="text-center mb-6">
           <h1 class="text-3xl font-bold text-indigo-600 animate-fade-in">🛒 Cart Page</h1>
 
-          <th:block th:if="${session.succMsg}">
-            <p class="text-green-600 font-semibold mt-2 animate-fade-in">[[${session.succMsg}]]</p>
-            <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+          <th:block th:if="${session.successMsg}">
+            <p class="text-green-600 font-semibold mt-2 animate-fade-in">[[${session.successMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
           </th:block>
 
           <th:block th:if="${session.errorMsg}">
             <p class="text-red-500 font-semibold mt-2 animate-fade-in">[[${session.errorMsg}]]</p>
-            <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+            <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
           </th:block>
         </div>
 
-        <!-- Table -->
         <div class="overflow-x-auto">
           <table class="min-w-full border-collapse border border-gray-200">
             <thead>
@@ -49,6 +45,7 @@
                 <th class="py-3 px-4 text-left">Price</th>
                 <th class="py-3 px-4 text-center">Quantity</th>
                 <th class="py-3 px-4 text-left">Total Price</th>
+                <th class="py-3 px-4 text-center">Action</th>
               </tr>
             </thead>
 
@@ -63,10 +60,17 @@
                 <td class="py-3 px-4 text-indigo-600 font-semibold">₹ [[${cart.price}]]</td>
 
                 <td class="py-3 px-4 text-center space-x-2">
-                  <a th:href="@{'/user/cartQuantityUpdate?sy=de&cid='+${cart.id}}"
-                     class="text-indigo-600 hover:text-indigo-800 transition transform hover:scale-125">
-                    <i class="fa-solid fa-minus"></i>
-                  </a>
+                  <th:block th:if="${cart.quantity == 1}">
+                    <a class="text-indigo-300 cursor-not-allowed transition transform hover:scale-125">
+                      <i class="fa-solid fa-minus"></i>
+                    </a>
+                  </th:block>
+                  <th:block th:unless="${cart.quantity == 1}">
+                    <a th:href="@{'/user/cartQuantityUpdate?sy=de&cid='+${cart.id}}"
+                      class="text-indigo-600 hover:text-indigo-800 transition transform hover:scale-125">
+                      <i class="fa-solid fa-minus"></i>
+                    </a>
+                  </th:block>
                   <span class="font-semibold text-gray-700">[[${cart.quantity}]]</span>
                   <a th:href="@{'/user/cartQuantityUpdate?sy=in&cid='+${cart.id}}"
                      class="text-indigo-600 hover:text-indigo-800 transition transform hover:scale-125">
@@ -75,14 +79,13 @@
                 </td>
 
                 <td class="py-3 px-4 font-semibold text-green-600">₹ [[${cart.totalPrice}]]</td>
+                <td class="py-3 px-4 font-medium text-center text-red-600"><a th:href="@{'/user/deleteCartProduct?sy=in&cid='+${cart.id}}">Remove</a></td>
               </tr>
 
-              <!-- Total Row -->
               <tr class="bg-gray-50">
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td class="py-3 px-4 font-bold text-right text-gray-800">Total Price:</td>
                 <td class="py-3 px-4 font-bold text-indigo-600">
-                  <!-- <th:block th:utext="${@commonServiceImpl.rupeeSign()}"></th:block> -->
                   ₹ [[${totalOrderPrice}]]
                 </td>
               </tr>
@@ -90,7 +93,6 @@
           </table>
         </div>
 
-        <!-- Proceed Button -->
         <div class="text-center mt-8">
           <a th:href="@{'/user/order'}"
              class="bg-linear-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold px-6 py-3 rounded-xl shadow-md transition transform hover:scale-105">
@@ -101,7 +103,6 @@
     </div>
   </section>
 
-  <!-- Smooth Animation -->
   <style>
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(-10px); }
@@ -112,7 +113,6 @@
     }
   </style>
 
-  <!-- FontAwesome Icons -->
   <script src="https://kit.fontawesome.com/a2e0f1f0e4.js" crossorigin="anonymous"></script>
 </div>
 </body>

@@ -3,15 +3,22 @@ package com.GopaShopping.Services.ServiceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import com.GopaShopping.Entities.Cart;
+import com.GopaShopping.Entities.ContactMessage;
 import com.GopaShopping.Entities.Orders;
+import com.GopaShopping.Entities.Products;
 import com.GopaShopping.Entities.User;
 import com.GopaShopping.Repositories.CartRepository;
+import com.GopaShopping.Repositories.ContactMessageRepository;
 import com.GopaShopping.Repositories.OrdersRepoitory;
+import com.GopaShopping.Repositories.ProductsRepository;
 import com.GopaShopping.Repositories.UserRepository;
 import com.GopaShopping.Services.UserServices;
 
@@ -26,6 +33,12 @@ public class UserServiceImpl implements UserServices {
 
     @Autowired
     private OrdersRepoitory ordersRepoitory;
+
+    @Autowired
+    private ProductsRepository productsRepository;
+
+    @Autowired
+    private ContactMessageRepository contactMessageRepository;
 
 
     // =============================== User ===========================
@@ -54,10 +67,6 @@ public class UserServiceImpl implements UserServices {
         return userRepository.findByEmail(email);
     }
 
-    // @Override
-    // public Cart getCartUserByUserId(Long userId) {
-    //     return cartRepository.findByuserId(userId);
-    // }
 
     // =========================== Product ====================
     @Override
@@ -78,7 +87,7 @@ public class UserServiceImpl implements UserServices {
 
     @Override 
     public List<Cart> getAllCartProductsByUserId(Long userId) {
-        return cartRepository.findByUserId(userId);
+        return cartRepository.findByUserIdOrderByIdDesc(userId);
     }
     
     @Override
@@ -107,6 +116,30 @@ public class UserServiceImpl implements UserServices {
 
 	}
 
+    @Override
+    public void deleteCartProduct(String sy, Long cid) {
+        Cart cart = cartRepository.findById(cid).get();
+        cartRepository.delete(cart);
+    }
+
+    @Override
+    public Products findProductById(Long id) {
+        return productsRepository.findByIsActiveTrueAndId(id);
+    }
+
+    @Override
+    public List<Products> findLatestProducts() {
+        return productsRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
+    @Override
+    public Page<Products> findByIsActiveTrueAndTitle(String title, int page, int size) {
+        var pageable = PageRequest.of(page, size);
+        return productsRepository.findByIsActiveTrueAndTitle(title, pageable);    
+    }
+
+    
+
 
     // ============================ Orders =================================
 
@@ -122,8 +155,14 @@ public class UserServiceImpl implements UserServices {
 
     @Override
     public List<Orders> ordersFindByUserId(Long userId) {
-        return ordersRepoitory.findByUserId(userId);
+        return ordersRepoitory.findByUserIdOrderByIdDesc(userId);
     }
     
+    // =========================== Contact Message =======================
+
+    @Override
+    public ContactMessage saveMessage(ContactMessage message) {
+        return contactMessageRepository.save(message);
+    }
     
 }

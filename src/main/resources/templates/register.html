@@ -10,17 +10,14 @@
     <div id="content">
 	<section class="w-full px-6 py-12 mt-10">
 		<div style="background-image: url('/images/backgraound.png'); width: 950px; height: 1000px;" class="max-w-6xl mx-auto bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 transition-all duration-700 hover:shadow-indigo-400/50">
-			<!-- Left Side Image -->
 			<div class="w-full md:w-1/2 flex justify-center animate-fadeIn">
 			</div>
 
-			<!-- Right Side Form -->
 			<div class="w-full md:w-1/2 border-2 border-black hover:border-blue-600 rounded-2xl shadow shadow-gray-800 p-8 transition-transform duration-500 hover:-translate-y-1">
 				<div class="text-center mb-6">
 					<h2 class="text-3xl font-extrabold text-indigo-700 mb-2">Create an Account</h2>
 					<p class="text-gray-600">Join us and start shopping today!</p>
 
-					<!-- Success/Error Messages -->
 					<th:block th:if="${session.successMsg}">
 						<p class="text-green-600 font-semibold mt-2">[[${session.successMsg}]]</p>
 						<th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
@@ -34,14 +31,8 @@
 
 				<form th:action="@{'/register'}" method="post" enctype="multipart/form-data" th:object="${userForm}" id="userRegister" novalidate class="space-y-5">
 
-					<!-- Name & Mobile -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
-							<!-- <label class="block text-gray-700 font-medium mb-1">Full Name</label>
-							<input required th:field="*{name}" type="text"
-								class="w-full border-2 border-gray-600 hover:border-blue-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-								<p th:if="${#fields.hasErrors('name')}" th:errors="${name}" class="fs-5 text-red-600"></p>
-							 -->
 							<label for="name">Full Name</label>
 							<input type="text" id="name" th:field="*{name}" placeholder="Enter full name" required
 								class="w-full border-2 border-gray-600 hover:border-blue-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -55,7 +46,6 @@
 							</div>
 					</div>
 
-					<!-- Email -->
 					<div>
 						<label for="email">Email</label>
 						<input type="email" id="email" th:field="*{email}" placeholder="Enter your email" required
@@ -63,7 +53,6 @@
 						<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fs-5 text-red-500"></p>
 					</div>
 
-					<!-- Address & City -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
 							<label for="address">Address</label>
@@ -79,7 +68,6 @@
 						</div>
 					</div>
 
-					<!-- State & Pincode -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
 							<label for="state">State</label>
@@ -95,7 +83,6 @@
 						</div>
 					</div>
 
-					<!-- Password & Confirm Password -->
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div>
 							<label for="password">Password</label>
@@ -111,31 +98,22 @@
 						</div>
 					</div>
 
-					<!-- Profile Image -->
 					<div>
 						<label class="block text-gray-700 font-medium mb-1">Profile Image</label>
 						<input name="file" type="file"
 							class="w-full border-2 border-gray-600 hover:border-blue-500 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 
-					<!-- Register Button -->
 					<button type="submit"
 						class="w-full bg-linear-to-r from-indigo-600 to-blue-500 text-white font-semibold py-3 rounded-lg shadow-lg hover:from-indigo-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-[1.02]">
 						Register
 					</button>
 				</form>
 
-				<!-- Footer -->
-				<div class="text-center mt-6 text-gray-700">
-					<p>Already have an account?
-						<a href="/login" class="text-indigo-600 font-semibold hover:underline">Login</a>
-					</p>
-				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Optional small fade-in animation -->
 	<script>
 		document.addEventListener("DOMContentLoaded", () => {
 			document.querySelectorAll(".animate-fadeIn").forEach(el => {

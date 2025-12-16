@@ -1,88 +1,217 @@
 
-<!-- templates/fragments/navbar.html -->
 <div th:fragment="navbar">
 
-<nav class="fixed top-0 bg-white left-0 w-full bg-none shadow-md z-50 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16 items-center">
-      
-      <!-- Logo -->
-      <div class="shrink-0 flex items-center space-x-2">
-        <a th:href="@{/home}"><img th:src="@{/images/logo.png}" alt="Logo" class="h-10 w-10 rounded-full"></a>
-        <a th:href="@{/home}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-all">Gopal Shopping</a>
+  <nav class="fixed top-0 bg-white left-0 w-full bg-none shadow-md z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+
+        <div class="shrink-0 flex items-center space-x-2">
+          <a th:href="@{/home}"><img th:src="@{/images/logo.png}" alt="Logo" class="h-10 w-10 rounded-full"></a>
+          <a th:href="@{/home}" class="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-all">Gopal
+            Shopping</a>
+        </div>
+
+        <div class="hidden items-center md:flex space-x-6 text-gray-700 font-medium">
+          <a th:href="@{/home}" th:classappend="${paramValue == 'home'} ? 'font-bold text-blue-600':''"
+            class="hover:text-blue-600 transition-all duration-300">Home</a>
+          <a th:href="@{/product}" th:classappend="${paramValue == 'product'} ? 'font-bold text-blue-600':''"
+            class="hover:text-blue-600 transition-all duration-300">Products</a>
+          <a th:href="@{/about}" th:classappend="${paramValue == 'about'} ? 'font-bold text-blue-600':''"
+            class="hover:text-blue-600 transition-all duration-300">About</a>
+          <a th:href="@{/contact}" th:classappend="${paramValue == 'contact'} ? 'font-bold text-blue-600':''"
+            class="hover:text-blue-600 transition-all duration-300">Contact</a>
+
+          <div class="flex items-center gap-3 relative">
+            <div th:if="${session.logedUser != null}" class="flex items-center gap-3 relative">
+              <div th:if="${session.logedUser.role == 'Guest'}" class="flex items-center gap-3 relative">
+                <a th:href="@{'/user/dashboard'}" class="hover:text-blue-600 transition-all duration-300">Mr. <span
+                    th:text="${session.logedUser.name}">User</span></a>
+                <a>
+                  <img id="show" th:src="@{'/images/profile_img/'+${session.logedUser.profileImage}}"
+                    class="w-10 h-10 rounded-full hover:scale-105 object-cover transition-all duration-300"
+                    alt="Profile">
+                </a>
+
+                <div id="group" class="absolute right-0 mt-48 w-40 bg-white rounded-xl shadow-md hidden">
+                  <ul class="py-2 text-gray-700">
+                    <li><a th:href="@{'/user/profile'}" class="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
+                    <li><a th:href="@{'/user/dashboard'}" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a></li>
+                    <li><a th:href="@{'/user/logout'}" class="block px-4 py-2 text-red-500 hover:bg-gray-100">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div th:unless="${session.logedUser.role == 'Guest'}" class="flex items-center gap-3 relative">
+
+                <a th:href="@{'/admin/'}" class="hover:text-blue-600 transition-all duration-300">Mr. <span
+                    th:text="${session.logedUser.name}">User</span></a>
+                <a>
+                  <img id="show" th:src="@{'/images/profile_img/'+${session.logedUser.profileImage}}"
+                    class="w-10 h-10 rounded-full hover:scale-105 object-cover transition-all duration-300"
+                    alt="Profile">
+                </a>
+
+                <div id="group" class="absolute right-0 mt-48 w-40 bg-white rounded-xl shadow-md hidden">
+                  <ul class="py-2 text-gray-700">
+                    <li><a th:href="@{'/admin/profile'}" class="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
+                    <li><a th:href="@{'/admin/'}" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a></li>
+                    <li><a th:href="@{'/user/logout'}" class="block px-4 py-2 text-red-500 hover:bg-gray-100">Logout</a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+            <span th:unless="${session.logedUser != null}">
+
+              <a th:href="@{'/login'}"
+                class="cursor-pointer hover:text-blue-600 transition-all border-2 rounded-3xl p-2 duration-300">
+                Login or Register
+              </a>
+
+
+            </span>
+          </div>
+
+
+        </div>
+
+        <div class="md:hidden flex items-center">
+          <button id="menu-toggle" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+            <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
+    </div>
 
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex space-x-6 text-gray-700 font-medium">
-        <a th:href="@{/home}" th:classappend="${paramValue == 'home'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Home</a>
-        <a th:href="@{/product}" th:classappend="${paramValue == 'product'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Products</a>
-        <a th:href="@{/about}" th:classappend="${paramValue == 'about'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">About</a>
-        <a th:href="@{/contact}" th:classappend="${paramValue == 'contact'} ? 'bg-blue-600 font-bold text-white':''" class="hover:text-blue-600 transition-all duration-300">Contact</a>
+    <div id="mobile-menu" class="md:hidden bg-white shadow-lg hidden animate-fade-in-down">
+      <div class="px-2 pt-2 pb-3 space-y-1 text-center text-gray-700 font-medium">
+        <a th:href="@{/home}" class="block py-2 hover:text-blue-600 transition-all">Home</a>
+        <a th:href="@{/product}" class="block py-2 hover:text-blue-600 transition-all">Products</a>
+        <a th:href="@{/about}" class="block py-2 hover:text-blue-600 transition-all">About</a>
+        <a th:href="@{/contact}" class="block py-2 hover:text-blue-600 transition-all">Contact</a>
 
-        <!-- Dynamic User Menu -->
         <span th:if="${session.logedUser != null}">
-          <a th:href="@{'/user/dashboard'}" class="hover:text-blue-600 transition-all duration-300">Hi, <span th:text="${session.logedUser.name}">User</span></a>
-          <a th:href="@{'/user/logout'}" class="hover:text-red-500 transition-all duration-300">Logout</a>
+          <a th:href="@{'/user/profile'}" class="block py-2 hover:text-blue-600">Hi, <span
+              th:text="${session.logedUser.name}">User</span></a>
+          <a th:href="@{'/user/logout'}" class="block py-2 text-red-500 hover:text-red-600">Logout</a>
         </span>
         <span th:unless="${session.logedUser != null}">
-          <a th:href="@{/login}" class="hover:text-blue-600 transition-all duration-300"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
-          <a th:href="@{/register}" class="hover:text-blue-600 transition-all duration-300"><i class="fa-solid fa-user-plus"></i>Signup</a>
+          <a th:href="@{/login}" class="block py-2 hover:text-blue-600">Login</a>
+          <a th:href="@{/register}" class="block py-2 hover:text-blue-600">Signup</a>
         </span>
       </div>
-
-      <!-- Mobile Menu Button -->
-      <div class="md:hidden flex items-center">
-        <button id="menu-toggle" class="text-gray-700 hover:text-blue-600 focus:outline-none">
-          <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
     </div>
-  </div>
+  </nav>
 
-  <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="md:hidden bg-white shadow-lg hidden animate-fade-in-down">
-    <div class="px-2 pt-2 pb-3 space-y-1 text-center text-gray-700 font-medium">
-      <a th:href="@{/home}" class="block py-2 hover:text-blue-600 transition-all">Home</a>
-      <a th:href="@{/product}" class="block py-2 hover:text-blue-600 transition-all">Products</a>
-      <a th:href="@{/about}" class="block py-2 hover:text-blue-600 transition-all">About</a>
-      <a th:href="@{/contact}" class="block py-2 hover:text-blue-600 transition-all">Contact</a>
+  <style>
+    #userTab:checked ~ div div #userContent {
+        display: block;
+    }
 
-      <span th:if="${session.logedUser != null}">
-        <a th:href="@{'/user/profile'}" class="block py-2 hover:text-blue-600">Hi, <span th:text="${session.logedUser.name}">User</span></a>
-        <a th:href="@{'/user/logout'}" class="block py-2 text-red-500 hover:text-red-600">Logout</a>
-      </span>
-      <span th:unless="${session.logedUser != null}">
-        <a th:href="@{/login}" class="block py-2 hover:text-blue-600">Login</a>
-        <a th:href="@{/register}" class="block py-2 hover:text-blue-600">Signup</a>
-      </span>
-    </div>
-  </div>
-</nav>
+    #adminTab:checked ~ div div #userContent {
+        display: none;
+    }
 
-<!-- Animation (Tailwind + JS) -->
-<style>
-@keyframes fade-in-down {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in-down {
-  animation: fade-in-down 0.3s ease-in-out;
-}
+    #adminTab:checked ~ div div #adminContent {
+        display: block;
+    }
+
+    #userTab:checked ~ div div #adminContent {
+        display: none;
+    }
 </style>
+  <style>
+    @keyframes fade-in-down {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
 
-<script>
-document.getElementById("menu-toggle").addEventListener("click", function() {
-  const menu = document.getElementById("mobile-menu");
-  const openIcon = document.getElementById("menu-open-icon");
-  const closeIcon = document.getElementById("menu-close-icon");
-  menu.classList.toggle("hidden");
-  openIcon.classList.toggle("hidden");
-  closeIcon.classList.toggle("hidden");
-});
-</script>
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in-down {
+      animation: fade-in-down 0.3s ease-in-out;
+    }
+  </style>
+
+  <script>
+
+
+    const btn = document.getElementById("show");
+    const box = document.getElementById("group");
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent closing instantly
+      box.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!box.contains(e.target) && !btn.contains(e.target)) {
+        box.classList.add("hidden");
+      }
+    });
+
+
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+      const menu = document.getElementById("mobile-menu");
+      const openIcon = document.getElementById("menu-open-icon");
+      const closeIcon = document.getElementById("menu-close-icon");
+      menu.classList.toggle("hidden");
+      openIcon.classList.toggle("hidden");
+      closeIcon.classList.toggle("hidden");
+    });
+  </script>
+
+<!-- <style>
+        .peer, .peer\/user, .peer\/admin {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #loginPopup:checked ~ .modal-container {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+        
+        #tabUser:checked ~ div.flex label[for="tabUser"],
+        #tabAdmin:checked ~ div.flex label[for="tabAdmin"] {
+            border-bottom: 4px solid #831843; /* indigo-700 */
+            color: #831843; /* indigo-700 */
+        }
+        
+        .tabUserContent, .tabAdminContent {
+            display: none;
+        }
+        
+        #tabUser:checked ~ .tabUserContent {
+            display: block;
+        }
+        #tabUser:checked ~ .tabAdminContent {
+            display: none;
+        }
+        
+        #tabAdmin:checked ~ .tabAdminContent {
+            display: block;
+        }
+        #tabAdmin:checked ~ .tabUserContent {
+            display: none;
+        }
+
+    </style> -->
 </div>

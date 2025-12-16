@@ -9,10 +9,8 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-
     <div id="content">
 
-  <!-- 🌟 Hero Section -->
   <section class="relative bg-linear-to-r from-indigo-600 to-blue-700 text-white py-20 mt-16 text-center overflow-hidden">
     <div class="container mx-auto px-6" data-sr="fade-up">
       <h1 class="text-4xl md:text-6xl font-bold mb-4">Get in Touch</h1>
@@ -23,57 +21,70 @@
     <div class="absolute inset-0 bg-linear-to-t from-black/20"></div>
   </section>
 
-  <!-- 💬 Contact Info Section -->
   <section class="container mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
     <div class="p-6 bg-white shadow-md rounded-xl hover:shadow-2xl transition duration-300" data-sr="fade-up">
       <i class="fas fa-map-marker-alt text-blue-600 text-4xl mb-4"></i>
       <h3 class="text-xl font-semibold mb-2">Address</h3>
-      <p th:text="${contactInfo.address}">123 Market Street, Mumbai, India</p>
+      <p th:text="${contactInfo.address}">12 Valmik Nagar, Machla, Chopda, Jalgaon, Mumbai, India</p>
     </div>
 
     <div class="p-6 bg-white shadow-md rounded-xl hover:shadow-2xl transition duration-300" data-sr="fade-up" data-sr-delay="150">
       <i class="fas fa-phone-alt text-blue-600 text-4xl mb-4"></i>
       <h3 class="text-xl font-semibold mb-2">Phone</h3>
-      <p th:text="${contactInfo.phone}">+91 9876543210</p>
+      <p th:text="${contactInfo.phone}">+91 7498050364</p>
     </div>
 
     <div class="p-6 bg-white shadow-md rounded-xl hover:shadow-2xl transition duration-300" data-sr="fade-up" data-sr-delay="300">
       <i class="fas fa-envelope text-blue-600 text-4xl mb-4"></i>
       <h3 class="text-xl font-semibold mb-2">Email</h3>
-      <p th:text="${contactInfo.email}">support@shopease.com</p>
+      <p th:text="${contactInfo.email}">sapkalegopal15@gmail.com</p>
     </div>
   </section>
 
-  <!-- 📨 Contact Form Section -->
   <section class="bg-blue-50 py-16">
     <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-blue-700 text-center mb-10">Send Us a Message</h2>
+      <h2 class="text-3xl font-bold text-blue-700 text-center mb-5">Send Us a Message</h2>
+
+      <th:block th:if="${session.successMsg}">
+            <p class="bg-green-100 text-green-700 text-center px-4 mt-2 py-2 rounded-lg font-semibold">[[${session.successMsg}]]</p>
+            <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+        </th:block>
+
+        <th:block th:if="${session.errorMsg}">
+                <p class="text-red-600 font-semibold text-center mb-2">[[${session.errorMsg}]]</p>
+                <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
+        </th:block>
+
       <form th:action="@{/contact/submit}" method="post" th:object="${contactForm}" 
-            class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg space-y-6" data-sr="fade-up">
+            class="max-w-3xl mx-auto bg-white mt-5 p-8 rounded-xl shadow-lg space-y-6" data-sr="fade-up">
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-gray-700 font-semibold mb-2">Name</label>
             <input type="text" th:field="*{name}" placeholder="Your Name"
                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fs-5 text-red-500"></p>
           </div>
           <div>
             <label class="block text-gray-700 font-semibold mb-2">Email</label>
             <input type="email" th:field="*{email}" placeholder="Your Email"
                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-          </div>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fs-5 text-red-500"></p>
+           </div>
         </div>
 
         <div>
           <label class="block text-gray-700 font-semibold mb-2">Subject</label>
           <input type="text" th:field="*{subject}" placeholder="Subject"
                  class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+          <p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="fs-5 text-red-500"></p>
         </div>
 
         <div>
           <label class="block text-gray-700 font-semibold mb-2">Message</label>
           <textarea th:field="*{message}" placeholder="Your Message..." rows="5"
                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+          <p th:if="${#fields.hasErrors('message')}" th:errors="*{message}" class="fs-5 text-red-500"></p>
         </div>
 
         <div class="text-center">
@@ -86,7 +97,6 @@
     </div>
   </section>
 
-  <!-- 📍 Map Section -->
   <section class="container mx-auto px-6 py-16" data-sr="fade-up">
     <h2 class="text-3xl font-bold text-blue-700 text-center mb-8">Our Location</h2>
     <div class="w-full h-96 rounded-xl overflow-hidden shadow-lg">
@@ -96,7 +106,6 @@
     </div>
   </section>
 
-  <!-- 🌈 ScrollReveal Animations -->
   <script>
     ScrollReveal().reveal('[data-sr="fade-up"]', {
       duration: 800,

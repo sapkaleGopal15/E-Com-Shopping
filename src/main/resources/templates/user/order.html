@@ -11,13 +11,11 @@
   <div id="content">
     <section class="w-full mt-14 max-w-6xl bg-white shadow-2xl rounded-2xl p-10 relative overflow-hidden transition-all duration-300 hover:shadow-blue-200">
     
-    <!-- Back Button -->
     <a href="javascript:history.back()" 
        class="absolute top-6 right-6 flex items-center text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 px-4 py-2 rounded-lg shadow-lg">
       <i class="fa-solid fa-arrow-left mr-2"></i> Back
     </a>
 
-    <!-- Title -->
     <div class="text-center mb-10">
       <h1 class="text-3xl font-bold text-gray-800 tracking-wide animate-fade-in">Checkout Page</h1>
       <p class="text-gray-500 mt-2">Complete your order details below</p>
@@ -25,7 +23,6 @@
 
     <form th:action="@{'/user/save-order'}" method="post" id="orders" class="grid md:grid-cols-2 gap-10">
       
-      <!-- Billing Section -->
       <div class="bg-linear-to-b from-indigo-50 to-white p-6 rounded-xl shadow-md transition-transform duration-300 hover:-translate-y-1 hover:shadow-indigo-200">
         <h2 class="text-2xl font-semibold text-indigo-700 text-center mb-4">Billing Address</h2>
         <hr class="mb-12 border-indigo-300">
@@ -35,26 +32,12 @@
             <label class="block text-gray-600 font-medium mb-1">Full Name</label>
             <input type="text" th:value="${user.name}" name="name" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
-          <!-- <div>
-            <label class="block text-gray-600 font-medium mb-1">Last Name</label>
-            <input type="text" name="lastName" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div> -->
+      
           <div>
             <label class="block text-gray-600 font-medium mb-1">Mobile No</label>
             <input type="number" name="contact" th:value="${user.contact}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
           </div>
         </div>
-
-        <!-- <div class="grid grid-cols-2 gap-4 mt-4">
-          <div>
-            <label class="block text-gray-600 font-medium mb-1">Email</label>
-            <input type="email" name="email" th:value="${user.email}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div>
-          <div>
-            <label class="block text-gray-600 font-medium mb-1">Mobile No</label>
-            <input type="text" name="mobileNo" th:value="${user.contact}" required class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-          </div>
-        </div> -->
 
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
@@ -79,7 +62,6 @@
         </div>
       </div>
 
-      <!-- Payment Section -->
       <div class="bg-linear-to-b from-indigo-50 to-white p-6 rounded-xl shadow-md transition-transform duration-300 hover:-translate-y-1 hover:shadow-indigo-200">
         <h2 class="text-2xl font-semibold text-indigo-700 text-center mb-4">Payment Summary</h2>
         <hr class="mb-4 border-indigo-300">
@@ -124,7 +106,6 @@
     </form>
   </section>
 
-  <!-- Simple fade-in animation -->
   <style>
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(20px); }

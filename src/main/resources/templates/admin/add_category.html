@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-  <!-- Smooth animation -->
   <style>
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -19,10 +18,6 @@
 <body class="bg-linear-to-br from-blue-50 via-white to-purple-50 min-h-screen">
   <div id="content">
     <section class="relative mt-2 p-10 animate-fadeInUp">
-      
-      <!-- ✅ Back Button (top-right corner) -->
-      
-      <!-- ✅ End Back Button -->
 
       <div class="container mx-auto shadow-2xl bg-white/80 backdrop-blur-lg rounded-2xl p-8 border border-gray-100">
         
@@ -37,20 +32,17 @@
 
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">📦 Manage Categories</h2>
         
-        <!-- Success Message -->
             <th:block th:if="${session.successMsg}">
               <p class="text-green-600 font-semibold text-center">[[${session.successMsg}]]</p>
               <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
             </th:block>
 
-            <!-- Error Message -->
             <th:block th:if="${session.errorMsg}">
               <p class="text-red-600 font-semibold text-center">[[${session.errorMsg}]]</p>
               <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
             </th:block>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <!-- Add Category Form -->
           <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-blue-200 transition-all duration-300">
             <h3 class="text-xl font-semibold text-center text-gray-700 mb-4">➕ Add Category</h3>
 
@@ -90,7 +82,6 @@
             </form>
           </div>
 
-          <!-- Category Table -->
           <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-purple-200 transition-all duration-300">
             <h3 class="text-xl font-semibold text-center text-gray-700 mb-6">📋 Category Details</h3>
 
@@ -132,29 +123,6 @@
               </table>
             </div>
           </div>
-
-          <!-- Pagination -->
-          <!-- <div class="flex flex-wrap items-center justify-between mt-6 text-sm text-gray-600">
-            <p>Total Categories: <span class="font-semibold text-gray-800">[[${totalElements}]]</span></p>
-
-            <nav aria-label="Pagination">
-              <ul class="flex items-center space-x-2">
-                <li th:classappend="${isFirst} ? 'opacity-50 cursor-not-allowed':''">
-                  <a th:href="@{'/admin/category?pageNo='+${pageNo-1}}" class="px-3 py-1 border rounded hover:bg-gray-100 transition">&laquo;</a>
-                </li>
-
-                <li th:each="i:${#numbers.sequence(1,totalPages)}"
-                  th:classappend="${pageNo+1==i}?'bg-blue-600 text-white':''"
-                  class="px-3 py-1 border rounded hover:bg-blue-50 transition">
-                  <a th:href="@{'/admin/category?pageNo='+${i-1}}">[[${i}]]</a>
-                </li>
-
-                <li th:classappend="${isLast} ? 'opacity-50 cursor-not-allowed':''">
-                  <a th:href="@{'/admin/category?pageNo='+${pageNo+1}}" class="px-3 py-1 border rounded hover:bg-gray-100 transition">&raquo;</a>
-                </li>
-              </ul>
-            </nav>
-          </div> -->
 
         </div>
       </div>

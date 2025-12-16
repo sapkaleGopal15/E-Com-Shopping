@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* Smooth fade + zoom animation */
     @keyframes fadeInZoom {
       from { opacity: 0; transform: scale(0.9) translateY(20px); }
       to { opacity: 1; transform: scale(1) translateY(0); }
@@ -16,7 +15,6 @@
       animation: fadeInZoom 0.7s ease-out forwards;
     }
 
-    /* Animated gradient background */
     .bg-animated {
       background: linear-gradient(135deg, #eef2ff, #e0f2fe, #f5f3ff);
       background-size: 300% 300%;
@@ -38,11 +36,9 @@
 
       
 
-      <!-- 🪄 Card -->
       <div class="bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl px-6 sm:px-8 py-8 sm:py-10 
                   border border-gray-100 transition-transform transform hover:scale-[1.02] duration-500">
 
-                  <!-- 🔙 Fixed Back Button (top-right) -->
   <div class="fixed top-6 right-6 z-50">
     <a th:href="@{'/admin/add-category'}"
        class="inline-flex items-center gap-2 px-5 py-2 text-sm sm:text-base font-semibold text-white 
@@ -53,29 +49,24 @@
     </a>
   </div>
   <br><br>
-        <!-- Header -->
         <div class="text-center mb-8">
           <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight mb-2">✏️ Edit Category</h2>
           <p class="text-gray-500 text-sm">Update your existing category details below</p>
 
-          <!-- ✅ Success Message -->
           <th:block th:if="${session.successMsg}">
             <p class="text-green-600 font-semibold animate-pulse mt-3">[[${session.successMsg}]]</p>
             <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
           </th:block>
 
-          <!-- ❌ Error Message -->
           <th:block th:if="${session.errorMsg}">
             <p class="text-red-600 font-semibold animate-pulse mt-3">[[${session.errorMsg}]]</p>
             <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
           </th:block>
         </div>
 
-        <!-- 📝 Form -->
         <form th:action="@{'/admin/update-category'}" method="post" enctype="multipart/form-data" class="space-y-6">
           <input type="hidden" name="id" th:value="${category.id}" />
 
-          <!-- Category Name -->
           <div>
             <label class="block text-gray-700 font-semibold mb-1">Category Name</label>
             <input type="text" name="name" th:value="${category.name}" required
@@ -83,7 +74,6 @@
                      focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" />
           </div>
 
-          <!-- Status -->
           <div>
             <label class="block text-gray-700 font-semibold mb-2">Status</label>
             <div class="flex gap-6 flex-wrap">
@@ -100,7 +90,6 @@
             </div>
           </div>
 
-          <!-- Upload Image -->
           <div>
             <label class="block text-gray-700 font-semibold mb-1">Upload Image</label>
             <input type="file" name="file" th:value="${category.imageName}"
@@ -108,14 +97,12 @@
                      focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200" />
           </div>
 
-          <!-- Preview -->
           <div class="flex justify-center mt-3">
             <img th:src="@{'/images/category_img/'+${category.imageName}}" alt="Category Image"
               class="w-28 sm:w-32 h-28 sm:h-32 object-cover rounded-xl shadow-md border border-gray-200 
                      hover:scale-110 transition-transform duration-300" />
           </div>
 
-          <!-- Submit -->
           <div class="pt-4">
             <button type="submit"
               class="w-full py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold 
@@ -129,7 +116,6 @@
     </section>
   </div>
 
-  <!-- Font Awesome for icons -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

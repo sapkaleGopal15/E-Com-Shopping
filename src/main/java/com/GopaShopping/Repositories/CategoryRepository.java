@@ -11,7 +11,6 @@ import com.GopaShopping.Entities.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    //public Boolean existByName(String name);
     public Category findByName(String name);
-    public List<Category> findByIsActiveTrue();
+    public List<Category> findByIsActiveTrueOrderByIdDesc();
 }

@@ -1,8 +1,13 @@
 package com.GopaShopping.Services.ServiceImpl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -46,7 +51,7 @@ public class AdminServiceImpl implements AdminServices{
 
     @Override
     public List<Category> getAllCategory() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
     @Override
@@ -67,7 +72,7 @@ public class AdminServiceImpl implements AdminServices{
 
     @Override
     public List<Category> getAllActiveCategory() {
-        return categoryRepository.findByIsActiveTrue();
+        return categoryRepository.findByIsActiveTrueOrderByIdDesc();
     }
 
 
@@ -79,9 +84,16 @@ public class AdminServiceImpl implements AdminServices{
     }
 
     @Override
+    public Page<Products> getAllProducts(int page, int size) {
+        var pageable = PageRequest.of(page, size);
+        return productsRepository.findAllByOrderByIdDesc(pageable);
+    }
+
+    @Override
     public List<Products> getAllProducts() {
         return productsRepository.findAll();
     }
+
 
     @Override
     public Products productFindById(Long id) {
@@ -100,28 +112,93 @@ public class AdminServiceImpl implements AdminServices{
     }
 
     @Override
-    public List<Products> productsFindByCategory(String category) {
-        return productsRepository.findByCategory(category);
+    public Page<Products> productsFindByCategory(String category, int page, int size) {
+        var pageable = PageRequest.of(page, size);
+        return productsRepository.findByCategory(category, pageable);
     }
 
     @Override
-    public List<Products> getAllActiveProducts() {
-        return productsRepository.findByIsActiveTrue();
+    public Page<Products> getAllActiveProducts(int page, int size) {
+        var pageable = PageRequest.of(page, size);
+        return productsRepository.findByIsActiveTrueOrderByIdDesc(pageable);
     }
 
     @Override
     public List<Products> getAllActiveProductsAndCategory(String category) {
-        return productsRepository.findByIsActiveTrueAndCategory(category);
+        return productsRepository.findByIsActiveTrueAndCategoryOrderByIdDesc(category);
     }
 
+    @Override
+    public List<Products> findBySearch(String title) {
+        return productsRepository.searchActiveProducts(title);
+    }
+
+    @Override
+    public List<Products> findProductBySearch(String keyword) {
+
+        if (keyword.matches("\\d+")) {
+            Long id = Long.valueOf(keyword);
+            return productsRepository.findById(id)
+                    .map(List::of)
+                    .orElse(productsRepository.findByPrice(Double.valueOf(keyword)));
+        }
+        
+        String status = keyword.toLowerCase();
+
+        if (status.equals("active")) {
+            return productsRepository.findByIsActive(true);
+        } else if (status.equals("inactive")) {
+            return productsRepository.findByIsActive(false);
+        } else {
+            return productsRepository.searchProductsByAll(keyword);
+        }
+    }
 
     // =========================== Orders =========================
 
     @Override
-    public List<Orders> getAllOrders() {
+    public List<Orders> getOrderBySearch(String keyword) {
+
+        if (keyword.matches("\\d+")) {
+            Long orderId = Long.valueOf(keyword);
+            return ordersRepoitory.findByIdOrderByIdDesc(orderId);
+        }
+
+        if (keyword.matches("\\d{2}[-]\\d{2}[-]\\d{4}")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate date = LocalDate.parse(keyword, formatter);
+            return ordersRepoitory.findByOrderDate(date);
+        }
+
+        if (keyword.matches("\\d{2}[/]\\d{2}[/]\\d{4}")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate date = LocalDate.parse(keyword, formatter);
+            return ordersRepoitory.findByOrderDate(date);
+        }
+
+        return ordersRepoitory.findByStatusOrderByIdDesc(keyword);
+    }
+
+    @Override
+    public Page<Orders> getAllOrders(int page, int size) {
+        var pageable = PageRequest.of(page, size);
+        return ordersRepoitory.findAllByOrderByIdDesc(pageable);
+    }
+
+    @Override
+    public List<Orders> getAllOrdersBy() {
         return ordersRepoitory.findAll();
     }
 
+    @Override
+    public Orders getOneOrderById(Long id) {
+        return ordersRepoitory.getById(id);
+    }
+
+    @Override
+    public void saveOrders(Orders orders) {
+        ordersRepoitory.save(orders);
+    }
 
     // ========================== Users =======================
 
@@ -133,6 +210,15 @@ public class AdminServiceImpl implements AdminServices{
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Boolean getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (ObjectUtils.isEmpty(user)) 
+            return false;
+        else
+            return true;
     }
 
     @Override

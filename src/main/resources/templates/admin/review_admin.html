@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{index :: parent(~{::#content}, ~{::title})}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Review Admin Dashboard</title>
+ 
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom animations using Tailwind's utilities + small CSS for keyframes */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+
+    @keyframes pop {
+      0% { transform: scale(.96); opacity: 0; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .animate-pop { animation: pop .45s cubic-bezier(.2,.9,.2,1) both; }
+
+    /* soft glass effect */
+    .glass { background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); backdrop-filter: blur(6px); }
+  </style>
+</head>
+<body class="min-h-screen bg-linear-to-br from-indigo-900 via-purple-900 to-pink-800 text-slate-50 font-sans">
+  <div id="content">
+    <div class="max-w-7xl mx-auto mt-12 p-6">
+    <header class="flex items-center justify-between mb-6">
+      <div class="flex items-center space-x-4">
+        <a th:href="@{'/admin/'}">
+        <div class="w-12 h-12 rounded-xl bg-linear-to-tr from-rose-400 to-yellow-300 shadow-xl flex items-center justify-center animate-float">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+        </div>
+        </a>
+        <div>
+          <h1 class="text-2xl font-extrabold tracking-tight">Review Admin</h1>
+          <p class="text-sm text-indigo-200/80">Moderate, manage and respond to product reviews</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <div class="hidden md:flex items-center space-x-4 glass px-3 py-2 rounded-full shadow-inner">
+          <input type="search" placeholder="Search reviews, users..." class="bg-transparent outline-none placeholder-indigo-200/60 text-sm w-56" />
+          <button class="px-3 py-1 rounded-full bg-indigo-500/80 hover:bg-indigo-400/90 text-xs font-medium transition">Search</button>
+        </div>
+        <button id="newReviewBtn" class="bg-emerald-400 text-emerald-900 px-4 py-2 rounded-xl font-semibold shadow hover:scale-105 transform transition animate-pop">New Review</button>
+      </div>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="glass rounded-2xl p-5 shadow-lg border border-white/6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm text-indigo-200/80">Pending Reviews</h3>
+            <p class="text-3xl font-bold mt-1">32</p>
+          </div>
+          <div class="bg-indigo-600/20 p-3 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3"/></svg>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-indigo-200/60">Last 24 hours: <span class="font-medium text-indigo-50">+6</span></div>
+      </div>
+
+      <div class="glass rounded-2xl p-5 shadow-lg border border-white/6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm text-indigo-200/80">Average Rating</h3>
+            <p class="text-3xl font-bold mt-1">4.3 <span class="text-sm text-indigo-200/60">/ 5</span></p>
+          </div>
+          <div class="bg-yellow-500/20 p-3 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.95a1 1 0 00.95.69h4.164c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.95c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.785.57-1.84-.197-1.54-1.118l1.286-3.95a1 1 0 00-.364-1.118L2.07 9.377c-.783-.57-.38-1.81.588-1.81h4.164a1 1 0 00.95-.69l1.286-3.95z"/></svg>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-indigo-200/60">This week: <span class="font-medium text-indigo-50">+0.2</span></div>
+      </div>
+
+      <div class="glass rounded-2xl p-5 shadow-lg border border-white/6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm text-indigo-200/80">Responded</h3>
+            <p class="text-3xl font-bold mt-1">128</p>
+          </div>
+          <div class="bg-rose-400/20 p-3 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.88L3 20l1.315-3.946A7.963 7.963 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-indigo-200/60">Total responded: <span class="font-medium text-indigo-50">+18</span></div>
+      </div>
+    </section>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+   
+      <section class="lg:col-span-2 space-y-4">
+
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-bold">Latest Reviews</h2>
+          <div class="text-sm text-indigo-200/70">Showing <span class="font-semibold">1-10</span> of <span class="font-semibold">320</span></div>
+        </div>
+
+        <div class="space-y-4">
+      
+          <article class="glass rounded-2xl p-4 shadow-md hover:shadow-xl transition transform hover:-translate-y-1 border border-white/5">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 rounded-full bg-linear-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white font-bold">JS</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="font-semibold">Jaya Sen — <span class="text-sm font-medium text-indigo-200/80">June 14, 2025</span></h3>
+                    <div class="flex items-center mt-1">
+                      <div class="flex items-center text-yellow-300 mr-2">★★★★★</div>
+                      <div class="text-sm text-indigo-200/60 ml-2">Great product, fast delivery and excellent support.</div>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-medium text-emerald-300">Approved</div>
+                    <div class="text-xs text-indigo-200/60">by Admin • 2h ago</div>
+                  </div>
+                </div>
+
+                <div class="mt-3 flex items-center gap-3">
+                  <button class="px-3 py-1 rounded-lg border border-white/6 text-sm hover:bg-white/6 transition">View</button>
+                  <button class="px-3 py-1 rounded-lg bg-emerald-400/20 text-emerald-300 hover:bg-emerald-400/30 transition">Approve</button>
+                  <button class="px-3 py-1 rounded-lg bg-rose-400/20 text-rose-200 hover:bg-rose-400/30 transition">Reject</button>
+                  <button class="ml-auto px-3 py-1 rounded-lg bg-indigo-500/80 text-white hover:scale-105 transform transition">Reply</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="glass rounded-2xl p-4 shadow-md border border-white/5 animate-pop">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 rounded-full bg-linear-to-br from-indigo-400 to-violet-500 flex items-center justify-center text-white font-bold">RK</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="font-semibold">Rohit K — <span class="text-sm font-medium text-indigo-200/80">Nov 01, 2025</span></h3>
+                    <div class="flex items-center mt-1">
+                      <div class="flex items-center text-yellow-300 mr-2">★★★☆☆</div>
+                      <div class="text-sm text-indigo-200/60 ml-2">Product is okay but packaging could be improved.</div>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-sm font-medium text-amber-300">Pending</div>
+                    <div class="text-xs text-indigo-200/60">—</div>
+                  </div>
+                </div>
+
+                <div class="mt-3 flex items-center gap-3">
+                  <button class="px-3 py-1 rounded-lg border border-white/6 text-sm hover:bg-white/6 transition">View</button>
+                  <button class="px-3 py-1 rounded-lg bg-emerald-400/20 text-emerald-300 hover:bg-emerald-400/30 transition">Approve</button>
+                  <button class="px-3 py-1 rounded-lg bg-rose-400/20 text-rose-200 hover:bg-rose-400/30 transition">Reject</button>
+                  <button class="ml-auto px-3 py-1 rounded-lg bg-indigo-500/80 text-white hover:scale-105 transform transition">Reply</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="glass rounded-2xl p-4 shadow-md border border-white/5">
+              <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 rounded-full bg-linear-to-br from-yellow-400 to-orange-500"></div>
+                <div>
+                  <h4 class="font-semibold">Sneha P — <span class="text-sm text-indigo-200/60">Oct 22, 2025</span></h4>
+                  <p class="text-sm text-indigo-200/60 mt-1">Amazing quality — will buy again.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass rounded-2xl p-4 shadow-md border border-white/5">
+              <div class="flex items-start space-x-3">
+                <div class="w-10 h-10 rounded-full bg-linear-to-br from-cyan-400 to-blue-500"></div>
+                <div>
+                  <h4 class="font-semibold">Manish G — <span class="text-sm text-indigo-200/60">Oct 10, 2025</span></h4>
+                  <p class="text-sm text-indigo-200/60 mt-1">Satisfied but delivery late.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <aside class="space-y-4">
+        <div class="glass rounded-2xl p-4 shadow-lg border border-white/6">
+          <h3 class="font-semibold">Filters</h3>
+          <div class="mt-3 space-y-2 text-sm text-indigo-200/70">
+            <label class="flex items-center justify-between">
+              <span>Only Pending</span>
+              <input type="checkbox" class="h-4 w-4 rounded" />
+            </label>
+            <label class="flex items-center justify-between">
+              <span>Only 1–2 stars</span>
+              <input type="checkbox" class="h-4 w-4 rounded" />
+            </label>
+            <label class="flex items-center justify-between">
+              <span>Has Images</span>
+              <input type="checkbox" class="h-4 w-4 rounded" />
+            </label>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-4 shadow-lg border border-white/6">
+          <h3 class="font-semibold">Quick Actions</h3>
+          <div class="mt-3 grid grid-cols-1 gap-3">
+            <button class="px-3 py-2 rounded-lg bg-indigo-500/80 hover:scale-105 transform transition">Bulk Approve</button>
+            <button class="px-3 py-2 rounded-lg bg-rose-500/80 hover:scale-105 transform transition">Bulk Reject</button>
+            <button class="px-3 py-2 rounded-lg bg-amber-400 text-amber-900 hover:scale-105 transform transition">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl p-4 shadow-lg border border-white/6 text-sm">
+          <h3 class="font-semibold">Tips</h3>
+          <ul class="mt-2 list-disc list-inside text-indigo-200/70">
+            <li>Respond to negative reviews within 24-48 hours.</li>
+            <li>Mark spam and abusive content as rejected.</li>
+            <li>Use canned replies to speed responses.</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+   
+  </div>
+
+  <div id="replyModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4">
+    <div class="bg-white/6 glass rounded-2xl w-full max-w-2xl p-6 shadow-2xl border border-white/8">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold">Reply to Review</h3>
+        <button id="closeModal" class="text-sm px-3 py-1 rounded-md bg-white/10">Close</button>
+      </div>
+      <textarea id="replyText" rows="5" class="mt-4 w-full p-3 rounded-md bg-white/5 placeholder-indigo-200/60 outline-none"></textarea>
+      <div class="mt-4 flex items-center justify-end gap-3">
+        <button id="sendReply" class="px-4 py-2 rounded-lg bg-emerald-400 text-emerald-900 font-semibold">Send Reply</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const modal = document.getElementById('replyModal');
+    document.getElementById('newReviewBtn').addEventListener('click', () => modal.classList.remove('hidden'));
+    document.getElementById('closeModal').addEventListener('click', () => modal.classList.add('hidden'));
+    document.getElementById('sendReply').addEventListener('click', () => {
+      const txt = document.getElementById('replyText').value.trim();
+      if (!txt) { alert('Please type a reply.'); return; }
+      alert('Reply sent:\n' + txt.slice(0, 200));
+      document.getElementById('replyText').value = '';
+      modal.classList.add('hidden');
+    });
+
+    window.addEventListener('keydown', (e) => { if (e.key.toLowerCase() === 'n') modal.classList.remove('hidden'); });
+  </script>
+  </div>
+</body>
+</html>

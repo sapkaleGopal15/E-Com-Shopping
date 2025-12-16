@@ -15,94 +15,96 @@
           <a th:href="@{'/admin/'}" class="text-blue-600 hover:text-blue-800 font-medium transition">
               <i class="fa-solid fa-arrow-left"></i> Back
             </a>
-          <!-- Header -->
           <div class="text-center mb-6">
             <h2 class="text-3xl font-semibold text-gray-800 mb-2">Add Admin</h2>
 
-            
-
-
-            <!-- Success Message -->
-            <th:block th:if="${session.succMsg}">
-              <p class="text-green-600 font-medium">[[${session.succMsg}]]</p>
-              <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+            <th:block th:if="${session.successMsg}">
+              <p class="text-green-600 font-medium">[[${session.successMsg}]]</p>
+              <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
             </th:block>
 
-            <!-- Error Message -->
             <th:block th:if="${session.errorMsg}">
               <p class="text-red-600 font-medium">[[${session.errorMsg}]]</p>
-              <th:block th:text="${@commnServiceImpl.removeSessionMessage()}"></th:block>
+              <th:block th:text="${@commonServiceImpl.removeMessage()}"></th:block>
             </th:block>
           </div>
 
-          <!-- Form -->
-          <form th:action="@{/admin/save-admin}" enctype="multipart/form-data" method="post" class="space-y-5">
+          <form th:action="@{/admin/save-admin}" enctype="multipart/form-data" novalidate th:object="${userForm}" method="post" class="space-y-5">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input required type="text" name="name"
+                <input required type="text" th:field="*{name}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fs-5 text-red-500"></p>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-                <input required type="number" name="mobileNumber"
+                <input required type="number" th:field="*{contact}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}" class="fs-5 text-red-500"></p>
               </div>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input required type="email" name="email"
+              <input required type="email" th:field="*{email}"
                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+              <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fs-5 text-red-500"></p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <input required type="text" name="address"
+                <input required type="text" th:field="*{address}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fs-5 text-red-500"></p>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-                <input required type="text" name="city"
+                <input required type="text" th:field="*{city}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="fs-5 text-red-500"></p>
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
-                <input required type="text" name="state"
+                <input required type="text" th:field="*{state}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('state')}" th:errors="*{state}" class="fs-5 text-red-500"></p>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
-                <input required type="number" name="pincode"
+                <input required type="number" th:field="*{pincode}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('pincode')}" th:errors="*{pincode}" class="fs-5 text-red-500"></p>
               </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input required type="password" name="password"
+                <input required type="password" th:field="*{password}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fs-5 text-red-500"></p>
               </div>
 
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input required type="password" name="cpassword"
+                <input required type="password" th:field="*{confirmPassword}"
                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="fs-5 text-red-500"></p>
               </div>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
-              <input type="file" name="img"
+              <input type="file" name="file"
                 class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
             <br>
